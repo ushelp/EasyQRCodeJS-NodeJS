@@ -110,7 +110,7 @@ var qrcode3 = new QRCode({
 	backgroundImageAlpha: 0.3,
 	autoColor: true,
 	
-	onRendStart:function(){
+	onRenderingStart:function(){
 		console.info("The QRCode file `q3.png` was created.");
 	}
 	
