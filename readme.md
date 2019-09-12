@@ -90,15 +90,17 @@ npm install easyqrcodejs-nodejs
 ```JS
 const QRCode = require('easyqrcodejs-nodejs');
 
-// New instance and config params
-var qrcode = new QRCode({
+// Options
+var options = {
 	text: "www.easyproject.cn/donation"
-});
+};
+
+// New instance with options
+var qrcode = new QRCode(options);
 
 // Save QRCode image
 qrcode.saveImage({
-	path: 'q.png', // save path
-	compressionLevel: 6  // ZLIB compression level between 0 and 9. default is 6
+	path: 'q.png' // save path
 });
 ```
 
@@ -109,14 +111,14 @@ qrcode.saveImage({
 ### Object
 
 ```JS
-var qrcode = new QRCode(DOM_object, options_object);
+var qrcode = new QRCode(options);
 ```
 
 
 - Options
 
 	```JS
-	 var options_object = {
+	 var options = {
 			// ====== Basic
 			text: "https://github.com/ushelp/EasyQRCodeJS",
 			width: 256,
@@ -249,7 +251,7 @@ var qrcode = new QRCode(DOM_object, options_object);
 
 ### Method
 
-- **saveImage(options_object)**
+- **saveImage(options)**
 
 	```JS
 	//  Save Images to file
