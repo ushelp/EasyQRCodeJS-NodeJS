@@ -3,7 +3,7 @@
  * 
  * NodeJS QRCode generator. Save image to file. Support Dot style, Logo, Background image, Colorful, Title, etc.(Running without DOM on server side)
  * 
- * Version 3.2.0
+ * Version 3.3.0
  * 
  * @author [ inthinkcolor@gmail.com ]
  * 
@@ -1091,6 +1091,19 @@ Drawing.prototype.draw = function(oQRCode) {
 
 
 	var t = this;
+    
+    function drawQuietZoneColor(){
+        // top
+        _oContext.lineWidth = 0;
+        _oContext.fillStyle =  _htOption.quietZoneColor;
+        _oContext.fillRect(0, 0, t._canvas.width, _htOption.quietZone);
+        // left
+         _oContext.fillRect(0, _htOption.quietZone, _htOption.quietZone, t._canvas.height-_htOption.quietZone*2);
+        // right
+         _oContext.fillRect(t._canvas.width-_htOption.quietZone,  _htOption.quietZone, _htOption.quietZone, t._canvas.height-_htOption.quietZone*2);
+        // bottom
+         _oContext.fillRect(0, t._canvas.height-_htOption.quietZone, t._canvas.width, _htOption.quietZone);
+    }
 
 	if (_htOption.backgroundImage) {
 
@@ -1112,6 +1125,9 @@ Drawing.prototype.draw = function(oQRCode) {
 	}
 
 	function drawQrcode(oQRCode) {
+        if(_htOption.quietZone>0 && _htOption.quietZoneColor){
+            drawQuietZoneColor();
+        }
 		for (var row = 0; row < nCount; row++) {
 			for (var col = 0; col < nCount; col++) {
 				var nLeft = col * nWidth + _htOption.quietZone;
@@ -1189,18 +1205,18 @@ Drawing.prototype.draw = function(oQRCode) {
 
 		if (_htOption.title) {
 			_oContext.fillStyle = _htOption.titleBackgroundColor;
-			_oContext.fillRect(0, 0, this._canvas.width, _htOption.titleHeight);
+			_oContext.fillRect(0, 0, t._canvas.width, _htOption.titleHeight);
 
 			_oContext.font = _htOption.titleFont;
 			_oContext.fillStyle = _htOption.titleColor;
 			_oContext.textAlign = 'center';
-			_oContext.fillText(_htOption.title, _htOption.width / 2, 30);
+			_oContext.fillText(_htOption.title, t._canvas.width / 2, 30);
 		}
 
 		if (_htOption.subTitle) {
 			_oContext.font = _htOption.subTitleFont;
 			_oContext.fillStyle = _htOption.subTitleColor;
-			_oContext.fillText(_htOption.subTitle, _htOption.width / 2, 60);
+			_oContext.fillText(_htOption.subTitle, t._canvas.width / 2, 60);
 		}
 
 
@@ -1338,13 +1354,15 @@ function QRCode(vOption) {
 	this._htOption = {
 		width: 256,
 		height: 256,
-		quietZone: 0,
 		typeNumber: 4,
 		colorDark: "#000000",
 		colorLight: "#ffffff",
 		correctLevel: QRErrorCorrectLevel.H,
 
 		dotScale: 1, // Must be greater than 0, less than or equal to 1. default is 1
+
+        quietZone: 0,
+        quietZoneColor: 'transparent', 
 
 		title: "",
 		titleFont: "bold 16px Arial",

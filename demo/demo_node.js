@@ -98,7 +98,8 @@ var qrcode3 = new QRCode({
 	timing_V: '#cc0033' ,// Vertical timing color
 	
 	// === Logo
-	logo: "https://avatars1.githubusercontent.com/u/4082017?s=160&v=4", // LOGO
+	// logo: "https://avatars1.githubusercontent.com/u/4082017?s=160&v=4", // LOGO
+	logo: "avatars.png", // LOGO
 	//					logo:"http://127.0.0.1:8020/easy-qrcodejs/demo/logo.png",  
 	//					logoWidth:80, 
 	//					logoHeight:80,
@@ -116,6 +117,51 @@ var qrcode3 = new QRCode({
 	
 });
 
+var qrcode4 = new QRCode({
+	// ====== Basic
+	text: "www.easyproject.cn/donation",
+	
+	width: 400,
+	height: 400,
+	quietZone: 20,
+	correctLevel: QRCode.CorrectLevel.H, // L, M, Q, H
+	dotScale: 0.5 ,// Must be greater than 0, less than or equal to 1. default is 1
+	colorDark: "#473C8B",
+	colorLight: "#FFFACD",
+    
+    // QuietZone
+    quietZone:15,
+    quietZoneColor:'#00CED1',
+	
+	// === Posotion Pattern(Eye) Color
+	PI: '#BF3030',
+	PO: '#269926', 
+	
+	PI_TL: '#b7d28d', // Position Inner - Top Left 
+	PO_TL: '#aa5b71', // Position Outer - Top Right
+	AO: '#336699',  // Position Outer - Bottom Right
+	AI: '#336699',  // Position Inner - Bottom Right
+	
+	// === Aligment color
+	AI: '#009ACD',
+	AO: '#B03060',
+	
+	// === Timing Pattern Color
+	//	timing: '#e1622f', // Global Timing color. if not set, the defaut is `colorDark`
+	timing_H: '#ff6600', // Horizontal timing color
+	timing_V: '#cc0033' ,// Vertical timing color
+	
+	// === Logo
+	// logo: "https://avatars1.githubusercontent.com/u/4082017?s=160&v=4", // LOGO
+	logo: "avatars.png", // LOGO
+	//					logo:"http://127.0.0.1:8020/easy-qrcodejs/demo/logo.png",  
+	//					logoWidth:80, 
+	//					logoHeight:80,
+	logoBackgroundColor: '#FFF8DC', // Logo backgroud color, Invalid when `logBgTransparent` is true; default is '#ffffff'
+	logoBackgroundTransparent: false // Whether use transparent image, default is false
+	
+});
+
 qrcode.saveImage({
 	path: 'q.png',
 	compressionLevel: 6
@@ -129,6 +175,10 @@ qrcode2.saveImage({
 
 qrcode3.saveImage({
 	path: 'q3.png'
+});
+
+qrcode4.saveImage({
+	path: 'q4.png'
 });
 
 
