@@ -128,10 +128,10 @@ var qrcode = new QRCode(options);
 			correctLevel : QRCode.CorrectLevel.H, // L, M, Q, H
 			dotScale: 1 // Must be greater than 0, less than or equal to 1. default is 1
 			
-            // ====== Quiet Zone
+			// ====== Quiet Zone
 			/*
-            quietZone: 0,
-            quietZoneColor: 'transparent',
+			quietZone: 0,
+			quietZoneColor: 'transparent',
 			*/
             
 			// ====== Logo
