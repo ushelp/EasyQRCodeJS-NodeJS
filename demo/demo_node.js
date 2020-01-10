@@ -1,7 +1,11 @@
 const QRCode = require('../index.min');
 
 
-var qrcode = new QRCode({
+
+// ================================ PNG Configs
+
+
+var config={
 	// ====== Basic
 	text: "www.easyproject.cn/donation",
 	width: 256,
@@ -11,11 +15,9 @@ var qrcode = new QRCode({
 	colorLight: "#ffffff",
 	correctLevel: QRCode.CorrectLevel.H, // L, M, Q, H
 	dotScale: 1 // Must be greater than 0, less than or equal to 1. default is 1
-});
+}
 
-
-
-var qrcode2 = new QRCode({
+var config2={
 	// ====== Basic
 	text: "www.easyproject.cn/donation",
 	
@@ -26,7 +28,7 @@ var qrcode2 = new QRCode({
 	dotScale: 0.5 ,// Must be greater than 0, less than or equal to 1. default is 1
 	colorDark: "#473C8B",
 	colorLight: "#FFFACD",
-	
+
 	// === Posotion Pattern(Eye) Color
 	PI: '#BF3030',
 	PO: '#269926', 
@@ -48,28 +50,28 @@ var qrcode2 = new QRCode({
 	// === Background image
 	backgroundImage: 'logo.png',
 	backgroundImageAlpha: 0.3,
-	autoColor: true,
-	
-});
+	autoColor: true
+}
 
-
-var qrcode3 = new QRCode({
+var config3={
 	// ====== Basic
 	text: "www.easyproject.cn/donation",
 	
 	width: 400,
 	height: 400,
-	quietZone: 20,
 	correctLevel: QRCode.CorrectLevel.H, // L, M, Q, H
 	dotScale: 0.5 ,// Must be greater than 0, less than or equal to 1. default is 1
 	colorDark: "#473C8B",
 	colorLight: "#FFFACD",
-	
+    
+    // QuietZone
+    quietZone:15,
+
 	// === Title
 	title: 'EasyQRCode', // Title
 	titleFont: "bold 24px Arial", // Title font
 	titleColor: "#004284", // Title Color
-	titleBackgroundColor: "#fffff", // Title Background
+	titleBackgroundColor: "#ffffff", // Title Background
 	titleHeight: 70, // Title height, include subTitle
 	titleTop: 25, // Title draw position(Y coordinate), default is 30
 	
@@ -105,33 +107,31 @@ var qrcode3 = new QRCode({
 	//					logoHeight:80,
 	logoBackgroundColor: '#FFF8DC', // Logo backgroud color, Invalid when `logBgTransparent` is true; default is '#ffffff'
 	logoBackgroundTransparent: false, // Whether use transparent image, default is false
-
+	
 	// === Background image
 	backgroundImage: 'logo.png',
 	backgroundImageAlpha: 0.3,
 	autoColor: true,
 	
-	onRenderingStart:function(){
-		console.info("The QRCode file `q3.png` was created.");
+	onRenderingStart:function(options){
+		console.info("The QRCode file `q3."+options.format+"` was created.");
 	}
-	
-});
+}
 
-var qrcode4 = new QRCode({
+var config4={
 	// ====== Basic
 	text: "www.easyproject.cn/donation",
 	
 	width: 400,
 	height: 400,
-	quietZone: 20,
 	correctLevel: QRCode.CorrectLevel.H, // L, M, Q, H
 	dotScale: 0.5 ,// Must be greater than 0, less than or equal to 1. default is 1
 	colorDark: "#473C8B",
 	colorLight: "#FFFACD",
-    
-    // QuietZone
-    quietZone:15,
-    quietZoneColor:'#00CED1',
+	
+	// QuietZone
+	quietZone:15,
+	quietZoneColor:'#00CED1',
 	
 	// === Posotion Pattern(Eye) Color
 	PI: '#BF3030',
@@ -159,32 +159,70 @@ var qrcode4 = new QRCode({
 	//					logoHeight:80,
 	logoBackgroundColor: '#FFF8DC', // Logo backgroud color, Invalid when `logBgTransparent` is true; default is '#ffffff'
 	logoBackgroundTransparent: false // Whether use transparent image, default is false
-	
-});
+}
+
+
+// ================================ PNG Test
+
+var qrcode = new QRCode(config);
+var qrcode2 = new QRCode(config2);
+var qrcode3 = new QRCode(config3);
+var qrcode4 = new QRCode(config4);
 
 qrcode.saveImage({
-	path: 'q.png',
-	compressionLevel: 6
+	path: 'q.png'
 });
-
-
 qrcode2.saveImage({
 	path: 'q2.png'
 });
-
-
 qrcode3.saveImage({
 	path: 'q3.png'
 });
-
 qrcode4.saveImage({
 	path: 'q4.png'
 });
-
-
 qrcode.toDataURL().then(data=>{
 	console.info('======QRCode PNG DataURL======')
 	console.info(data)
 	console.info('')
 });
 
+// ================================ JPG Test
+
+var config5 = Object.assign({}, config, {
+    format:'JPG'
+});
+var config6 = Object.assign({}, config2, {
+    format:'JPG'
+});
+var config7 = Object.assign({}, config3, {
+    format:'JPG'
+});
+var config8 = Object.assign({}, config4, {
+    format:'JPG'
+});
+
+var qrcode5 = new QRCode(config5);
+var qrcode6 = new QRCode(config6);
+var qrcode7 = new QRCode(config7);
+var qrcode8 = new QRCode(config8);
+
+
+qrcode5.saveImage({
+	path: 'q.jpg'
+});
+qrcode6.saveImage({
+	path: 'q2.jpg'
+});
+qrcode7.saveImage({
+	path: 'q3.jpg'
+});
+qrcode8.saveImage({
+	path: 'q4.jpg'
+});
+
+qrcode5.toDataURL().then(data=>{
+	console.info('======QRCode JPG DataURL======')
+	console.info(data)
+	console.info('')
+});

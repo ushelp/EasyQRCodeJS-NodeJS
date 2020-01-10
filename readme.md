@@ -195,79 +195,87 @@ var qrcode = new QRCode(options);
 		   
 			// ===== Event Handler
 			/*
-			onRenderingStart: undefined
+			onRenderingStart: undefined,
+			*/
+           
+			// ==== Images format
+			/*
+			format: 'PNG', // 'PNG', 'JPG'
+			compressionLevel: 6, // ZLIB compression level (0-9). default is 6
+			quality: 0.75 // An object specifying the quality (0 to 1). default is 0.75. (JPGs only) 
 			*/
 	}
 	```
 
-	| Option | Required | Type | Defaults | Description | Compatibility |
-	| --- | --- |--- | --- |--- | --- |
-	| Basic options| --- | ---|---|---|---|
-	| **text** | Y | String |`''` |  Text | &nbsp; |
-	| **width** | N | Number | `256` |  Width |  &nbsp; |
-	| **height** | N | Number | `256` |  Height |  &nbsp; |
-	| **colorDark** | N | String | `#000000` | Dark CSS color |  &nbsp; |
-	| **colorLight** | N | String | `#ffffff` | Light CSS color |  &nbsp; |
-	| **correctLevel** | N | Enum | `QRCode.CorrectLevel.H` | `QRCode.CorrectLevel.H`<br/>`QRCode.CorrectLevel.Q` <br/> `QRCode.CorrectLevel.M` <br/> `QRCode.CorrectLevel.L`|  &nbsp; |
-	| **dotScale** | N | Number | `1.0` |Dot style required Patterns. Ranges: `0-1.0` | &nbsp; |
-    | Quiet Zone| --- | ---|---|---|---|
-    | **quietZone** | N | Number | `0` |  Quiet Zone size |  &nbsp; |
-    | **quietZoneColor** | N | String | `transparent` |  Background CSS color to Quiet Zone |  &nbsp; |
-	| Logo options| --- | ---|---|---|---|
-	| **logo** | N | String | `undefined` | Logo Image Path. If use relative address, relative to `easy.qrcode.min.js` |  &nbsp; |
-	| **logoWidth** | N | Number | `undefined` |  Height |  &nbsp; |
-	| **logoHeight** | N | Number | `undefined` |  Width |  &nbsp; |
-	| **logoBackgroundTransparent** | N | Boolean | `false` |  Whether the background transparent image(`PNG`) shows transparency. When `true`, `logoBackgroundColor` is invalid |  &nbsp; |
-	| **logoBackgroundColor** | N | String | `#ffffff` |  Set Background CSS Color when image background transparent. Valid when `logoBackgroundTransparent` is `false` |  &nbsp; |
-	| Backgroud Image options|  ---|--- |---|---|---|
-	| **backgroundImage** | N | String | `undefined` | Background Image Path. If use relative address, relative to `easy.qrcode.min.js` |  &nbsp; |
-	| **backgroundImageAlpha** | N | Number | `1.0` |  Background image transparency. Ranges: `0-1.0`  |  &nbsp; |
-	| **autoColor** | N | Boolean | `false` |  Automatic color adjustment |  &nbsp; |
-	| Posotion Pattern Color options| --- | ---|---|---|---|
-	| **PO** | N | String | `undefined` | Global Posotion Outer CSS color. if not set, the defaut is `colorDark` |  &nbsp; |
-	| **PI** | N | String | `undefined` | Global Posotion Inner CSS color. if not set, the defaut is `colorDark` |  &nbsp; |
-	| **PO_TL** | N | String | `undefined` | Posotion Outer CSS color - Top Left |  &nbsp; |
-	| **PI_TL** | N | String | `undefined` | Posotion Inner CSS color - Top Left |  &nbsp; |
-	| **PO_TR** | N | String | `undefined` | Posotion Outer CSS color - Top Right |  &nbsp; |
-	| **PI_TR** | N | String | `undefined` | Posotion Inner CSS color - Top Right |  &nbsp; |
-	| **PO_BL** | N | String | `undefined` | Posotion Outer CSS color - Bottom Left |  &nbsp; |
-	| **PI_BL** | N | String | `undefined` | Posotion Inner CSS color - Bottom Left |  &nbsp; |
-	| Alignment Color options| --- |--- |---|---|---|
-	| **AO** | N | String | `undefined` | Alignment Outer CSS color. if not set, the defaut is `colorDark` |  &nbsp; |
-	| **AI** | N | String | `undefined` | Alignment Inner CSS color. if not set, the defaut is `colorDark` |  &nbsp; |
-	| Timing Pattern Color options| --- | ---|---|---|---|
-	| **timing** | N | String | `undefined` | Global Timing CSS color. if not set, the defaut is `colorDark` |  &nbsp; |
-	| **timing_H** | N | String | `undefined` | Horizontal timing CSS color |  &nbsp; |
-	| **timing_V** | N | String | `undefined` | Vertical timing CSS color |  &nbsp; |
-	| Title options| --- | ---|---|---|---|
-	| **title** | N | String | `''` |  |  &nbsp; |
-	| **titleFont** | N | String | `bold 16px Arial` | CSS Font |  &nbsp; |
-	| **titleColor** | N | String | `#000000` | CSS color |  &nbsp; |
-	| **titleBackgroundColor** | N | String | `#ffffff` | CSS color|  &nbsp; |
-	| **titleHeight** | N | Number | `0` | Title Height, Include subTitle |  &nbsp; |
-	| **titleTop** | N | Number | `30` | draws y coordinates.|  &nbsp; |
-	| SubTitle options| --- | ---|---|---|---|
-	| **subTitle** | N | String | `''` |  |  &nbsp; |
-	| **subTitleFont** | N | String | `14px Arial` | CSS Font |  &nbsp; |
-	| **subTitleColor** | N | String | `#4F4F4F` | CSS color |  &nbsp; |
-	| **subTitleTop** | N | Number | `0` | draws y coordinates. default is 0|  &nbsp; |
-	| Event Handler options| --- | ---|---|---|---|
-	| **onRenderingStart** | N | Function | `undefined` | Callback function when rendering start work. can use to hide loading state or handling.  |  &nbsp; |
+	| Option | Required | Type | Defaults | Description |
+	| --- | --- |--- | --- |--- |
+	| Basic options| --- | ---|---|---|
+	| **text** | Y | String |`''` |  Text |
+	| **width** | N | Number | `256` |  Width | 
+	| **height** | N | Number | `256` |  Height | 
+	| **colorDark** | N | String | `#000000` | Dark CSS color | 
+	| **colorLight** | N | String | `#ffffff` | Light CSS color | 
+	| **correctLevel** | N | Enum | `QRCode.CorrectLevel.H` | `QRCode.CorrectLevel.H`<br/>`QRCode.CorrectLevel.Q` <br/> `QRCode.CorrectLevel.M` <br/> `QRCode.CorrectLevel.L`| 
+	| **dotScale** | N | Number | `1.0` |Dot style required Patterns. Ranges: `0-1.0` | 
+    | Quiet Zone| --- | ---|---|---|
+    | **quietZone** | N | Number | `0` |  Quiet Zone size | 
+    | **quietZoneColor** | N | String | `transparent` |  Background CSS color to Quiet Zone | 
+	| Logo options| --- | ---|---|---|
+	| **logo** | N | String | `undefined` | Logo Image Path. If use relative address, relative to `easy.qrcode.min.js` |  
+	| **logoWidth** | N | Number | `undefined` |  Height |  
+	| **logoHeight** | N | Number | `undefined` |  Width |  
+	| **logoBackgroundTransparent** | N | Boolean | `false` |  Whether the background transparent image(`PNG`) shows transparency. When `true`, `logoBackgroundColor` is invalid |  
+	| **logoBackgroundColor** | N | String | `#ffffff` |  Set Background CSS Color when image background transparent. Valid when `logoBackgroundTransparent` is `false` |  
+	| Backgroud Image options|  ---|--- |---|---|
+	| **backgroundImage** | N | String | `undefined` | Background Image Path. If use relative address, relative to `easy.qrcode.min.js` | 
+	| **backgroundImageAlpha** | N | Number | `1.0` |  Background image transparency. Ranges: `0-1.0`  |  
+	| **autoColor** | N | Boolean | `false` |  Automatic color adjustment | 
+	| Posotion Pattern Color options| --- | ---|---|---|
+	| **PO** | N | String | `undefined` | Global Posotion Outer CSS color. if not set, the defaut is `colorDark` | 
+	| **PI** | N | String | `undefined` | Global Posotion Inner CSS color. if not set, the defaut is `colorDark` | 
+	| **PO_TL** | N | String | `undefined` | Posotion Outer CSS color - Top Left |  
+	| **PI_TL** | N | String | `undefined` | Posotion Inner CSS color - Top Left |  
+	| **PO_TR** | N | String | `undefined` | Posotion Outer CSS color - Top Right |  
+	| **PI_TR** | N | String | `undefined` | Posotion Inner CSS color - Top Right | 
+	| **PO_BL** | N | String | `undefined` | Posotion Outer CSS color - Bottom Left | 
+	| **PI_BL** | N | String | `undefined` | Posotion Inner CSS color - Bottom Left | 
+	| Alignment Color options| --- |--- |---|---|
+	| **AO** | N | String | `undefined` | Alignment Outer CSS color. if not set, the defaut is `colorDark` | 
+	| **AI** | N | String | `undefined` | Alignment Inner CSS color. if not set, the defaut is `colorDark` |  
+	| Timing Pattern Color options| --- | ---|---|---|
+	| **timing** | N | String | `undefined` | Global Timing CSS color. if not set, the defaut is `colorDark` |  
+	| **timing_H** | N | String | `undefined` | Horizontal timing CSS color |  
+	| **timing_V** | N | String | `undefined` | Vertical timing CSS color |  
+	| Title options| --- | ---|---|---|
+	| **title** | N | String | `''` |  | 
+	| **titleFont** | N | String | `bold 16px Arial` | CSS Font |  
+	| **titleColor** | N | String | `#000000` | CSS color |  
+	| **titleBackgroundColor** | N | String | `#ffffff` | CSS color| 
+	| **titleHeight** | N | Number | `0` | Title Height, Include subTitle |  
+	| **titleTop** | N | Number | `30` | draws y coordinates.| 
+	| SubTitle options| --- | ---|---|---|
+	| **subTitle** | N | String | `''` |  |  
+	| **subTitleFont** | N | String | `14px Arial` | CSS Font | 
+	| **subTitleColor** | N | String | `#4F4F4F` | CSS color | 
+	| **subTitleTop** | N | Number | `0` | draws y coordinates. default is 0|
+	| Event Handler options| --- | ---|---|---|
+	| **onRenderingStart(qrCodeOptions)** | N | Function | `undefined` | Callback function when rendering start work. can use to hide loading state or handling.  | 
+	| Images format options| --- | ---|---|---|
+    | **format** | N | String | `PNG` | 'PNG' or 'JPG'  |
+	| **compressionLevel** | N | Number | `6` | ZLIB compression level between 0 and 9. (**PNGs only**)  |
+	| **quality** | N | Number | `0.75` | An object specifying the quality (0 to 1). (**JPGs only**)  |
 
+### Methods
 
-
-### Method
-
-- **saveImage(options)**
+- **saveImage(ImagesFormatOptions)**
 
 	```JS
-	//  Save Images to file
+	//  Save PNG Images to file
 	qrcode.saveImage({
-		path: 'q.png', // file path
-		compressionLevel: 6 // ZLIB compression level between 0 and 9. default is 6
+		path: 'q.png' // file path
 	});
 	```
-
+    
 - **toDataURL()**
  
 	```JS
@@ -281,6 +289,8 @@ var qrcode = new QRCode(options);
 
 ## License
 MIT License
+
+
 
 ## End
 

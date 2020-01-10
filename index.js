@@ -3,7 +3,7 @@
  * 
  * NodeJS QRCode generator. Save image to file. Support Dot style, Logo, Background image, Colorful, Title, etc.(Running without DOM on server side)
  * 
- * Version 3.3.0
+ * Version 3.4.0
  * 
  * @author [ inthinkcolor@gmail.com ]
  * 
@@ -1063,11 +1063,10 @@ var Drawing = function(htOption) {
  * @param {QRCode} oQRCode 
  */
 Drawing.prototype.draw = function(oQRCode) {
+    
 
 	var _oContext = this._oContext;
 	var _htOption = this._htOption;
-
-
 
 
 	if (!_htOption.title && !_htOption.subTitle) {
@@ -1075,19 +1074,40 @@ Drawing.prototype.draw = function(oQRCode) {
 		_htOption.titleHeight = 0;
 	}
 
-
 	var nCount = oQRCode.getModuleCount();
 	var nWidth = Math.round(_htOption.width / nCount);
 	var nHeight = Math.round((_htOption.height - _htOption.titleHeight) / nCount);
 
-	this._htOption.width = nWidth * nCount;
-	this._htOption.height = nHeight * nCount + _htOption.titleHeight;
+	_htOption.quietZone = Math.round(_htOption.quietZone);
 
-	this._htOption.quietZone = Math.round(this._htOption.quietZone);
+    this._htOption.width = nWidth * nCount;
+	this._htOption.height = nHeight * nCount + _htOption.titleHeight;
 
 
 	this._canvas.width = this._htOption.width + this._htOption.quietZone * 2;
 	this._canvas.height = this._htOption.height + this._htOption.quietZone * 2;
+    
+    this._htOption.autoColor=true;
+
+    var autoColorDark="rgba(0, 0, 0, .6)";
+    var autoColorLight="rgba(255, 255, 255, .7)";
+    var notAutoColorLight="rgba(0,0,0,0)";
+    // JPG 
+    if(_htOption.format=='JPG' ){
+        
+        if( _htOption.quietZoneColor=='transparent'){
+            _htOption.quietZoneColor='#ffffff';
+        }
+        
+        _htOption.logoBackgroundTransparent=false;
+        
+        autoColorDark= _htOption.colorDark;
+        autoColorLight= _htOption.colorLight;
+        notAutoColorLight=_htOption.colorLight;
+        
+        _oContext.fillStyle = "#ffffff";   
+        _oContext.fillRect(0, 0, this._canvas.width, this._canvas.height);  
+    }
 
 
 	var t = this;
@@ -1096,6 +1116,7 @@ Drawing.prototype.draw = function(oQRCode) {
         // top
         _oContext.lineWidth = 0;
         _oContext.fillStyle =  _htOption.quietZoneColor;
+        
         _oContext.fillRect(0, 0, t._canvas.width, _htOption.quietZone);
         // left
          _oContext.fillRect(0, _htOption.quietZone, _htOption.quietZone, t._canvas.height-_htOption.quietZone*2);
@@ -1125,9 +1146,7 @@ Drawing.prototype.draw = function(oQRCode) {
 	}
 
 	function drawQrcode(oQRCode) {
-        if(_htOption.quietZone>0 && _htOption.quietZoneColor){
-            drawQuietZoneColor();
-        }
+        
 		for (var row = 0; row < nCount; row++) {
 			for (var col = 0; col < nCount; col++) {
 				var nLeft = col * nWidth + _htOption.quietZone;
@@ -1178,17 +1197,19 @@ Drawing.prototype.draw = function(oQRCode) {
 						if (_htOption.backgroundImage) {
 
 							if (_htOption.autoColor) {
-								_oContext.strokeStyle = bIsDark ? "rgba(0, 0, 0, .6)" : "rgba(255, 255, 255, .7)";
-								_oContext.fillStyle = bIsDark ? "rgba(0, 0, 0, .6)" : "rgba(255, 255, 255, .7)";
+								_oContext.strokeStyle = bIsDark ? autoColorDark : autoColorLight;
+								_oContext.fillStyle = bIsDark ? autoColorDark : autoColorLight;
 							} else {
-								_oContext.strokeStyle = bIsDark ? _htOption.colorDark : "rgba(0,0,0,0)";
-								_oContext.fillStyle = bIsDark ? _htOption.colorDark : "rgba(0,0,0,0)";
+								// _oContext.strokeStyle = bIsDark ? _htOption.colorDark : notAutoColorLight;
+								_oContext.fillStyle = bIsDark ? _htOption.colorDark : notAutoColorLight;
 								_oContext.strokeStyle = _oContext.fillStyle;
 							}
-							_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop + nHeight * (1 -
-								nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale);
+                                _oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop + nHeight * (1 -
+                                	nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale);
+							
 						} else {
 							_oContext.strokeStyle = _oContext.fillStyle;
+                            
 							_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop + nHeight * (1 -
 								nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale);
 
@@ -1205,21 +1226,19 @@ Drawing.prototype.draw = function(oQRCode) {
 
 		if (_htOption.title) {
 			_oContext.fillStyle = _htOption.titleBackgroundColor;
-			_oContext.fillRect(0, 0, t._canvas.width, _htOption.titleHeight);
+			_oContext.fillRect(0, 0, t._canvas.width, _htOption.titleHeight+this._htOption.quietZone);
 
 			_oContext.font = _htOption.titleFont;
 			_oContext.fillStyle = _htOption.titleColor;
 			_oContext.textAlign = 'center';
-			_oContext.fillText(_htOption.title, t._canvas.width / 2, 30);
+			_oContext.fillText(_htOption.title, t._canvas.width / 2, this._htOption.quietZone+30);
 		}
 
 		if (_htOption.subTitle) {
 			_oContext.font = _htOption.subTitleFont;
 			_oContext.fillStyle = _htOption.subTitleColor;
-			_oContext.fillText(_htOption.subTitle, t._canvas.width / 2, 60);
+			_oContext.fillText(_htOption.subTitle, t._canvas.width / 2, this._htOption.quietZone+60);
 		}
-
-
 
 		if (_htOption.logo) {
 			var img = new Image();
@@ -1256,7 +1275,11 @@ Drawing.prototype.draw = function(oQRCode) {
 					_htOption.titleHeight + _htOption.quietZone * 2 - imgH) / 2, imgW, imgH);
 
 				_this._bIsPainted = true;
-
+                    
+                if(_htOption.quietZone>0 && _htOption.quietZoneColor){
+                    drawQuietZoneColor();
+                }
+                    
 				_this.makeImage();
 			}
 
@@ -1269,8 +1292,6 @@ Drawing.prototype.draw = function(oQRCode) {
 				console.error(e)
 			}
 
-
-
 			if (img.complete) {
 				img.onload = null;
 				genratorImg();
@@ -1279,12 +1300,14 @@ Drawing.prototype.draw = function(oQRCode) {
 
 		} else {
 			this._bIsPainted = true;
+            if(_htOption.quietZone>0 && _htOption.quietZoneColor){
+                drawQuietZoneColor();
+            }
 			this.makeImage();
-
 		}
 
 
-
+        
 	}
 
 };
@@ -1293,19 +1316,31 @@ Drawing.prototype.draw = function(oQRCode) {
  * Make the image from Canvas
  */
 Drawing.prototype.makeImage = function() {
+    
 	var makeOptions = this.makeOptions;
 	var t=this;
 	
 	if (makeOptions.makeType == 'FILE') {
 		
 		if (this._htOption.onRenderingStart) {
-			this._htOption.onRenderingStart();
+			this._htOption.onRenderingStart(this._htOption);
 		}
 		
 		var out = fs.createWriteStream(makeOptions.path)
-		var stream = this._canvas.createPNGStream({
-			compressionLevel: makeOptions.compressionLevel
-		})
+        
+        var stream=undefined;
+        
+        
+        
+        if(this._htOption.format=='PNG'){
+            stream = this._canvas.createPNGStream({
+            	compressionLevel: this._htOption.compressionLevel
+            })
+        }else{
+            stream = this._canvas.createJPEGStream({
+            	quality: this._htOption.quality
+            })
+        }
 		
 		stream.pipe(out);
 		out.on('finish', () => {
@@ -1313,17 +1348,25 @@ Drawing.prototype.makeImage = function() {
 		})
 		
 		
-		
 	} else if (makeOptions.makeType == 'URL') {
 		
 		if (this._htOption.onRenderingStart) {
-			this._htOption.onRenderingStart();
+			this._htOption.onRenderingStart(this._htOption);
 		}
 		
-		// dataUrl = this._canvas.toDataURL()
-		this._canvas.toDataURL((err, data) => { 
-			t.resolve(data);
-		}) // defaults to PNG
+        
+        if(this._htOption.format== 'PNG'){
+            // dataUrl = this._canvas.toDataURL()
+            this._canvas.toDataURL((err, data) => { 
+            	t.resolve(data);
+            }) // defaults to PNG
+        }else{
+            this._canvas.toDataURL('image/jpeg', (err, data) => { 
+            	t.resolve(data);
+            }) 
+        }
+        
+		
 	}
 
 
@@ -1407,8 +1450,12 @@ function QRCode(vOption) {
 		autoColor: false,
 
 		// ==== Event Handler
-		onRenderingStart: undefined
-
+		onRenderingStart: undefined,
+        
+        // ==== Images format
+        format: 'PNG', // 'PNG', 'JPG'
+        compressionLevel: 6, // ZLIB compression level (0-9). default is 6
+        quality: 0.75 // An object specifying the quality (0 to 1). default is 0.75. (JPGs only) 
 	};
 	if (typeof vOption === 'string') {
 		vOption = {
@@ -1422,7 +1469,23 @@ function QRCode(vOption) {
 			this._htOption[i] = vOption[i];
 		}
 	}
-
+    
+    this._htOption.format=this._htOption.format.toUpperCase();
+    if(this._htOption.format!='PNG' && this._htOption.format!='JPG'){
+        console.warn("Image format '"+this._htOption.format+"' is invalidate, reset to 'PNG'")
+        this._htOption.format='PNG';
+    }
+    if (this._htOption.format=='PNG' && (this._htOption.compressionLevel < 0 || this._htOption.compressionLevel > 9)) {
+    	console.warn(this._htOption.compressionLevel +
+    		" is invalidate, PNG compressionLevel must between 0 and 9, now reset to 6. ")
+    	this._htOption.compressionLevel = 1;
+    }else if(this._htOption.quality < 0 || this._htOption.quality > 1) {
+    	console.warn(this._htOption.compressionLevel +
+    		" is invalidate, JPG quality must between 0 and 1, now reset to 0.75. ")
+    	this._htOption.quality = 0.75;
+    }
+    
+    
 	if (this._htOption.dotScale < 0 || this._htOption.dotScale > 1) {
 		console.warn(this._htOption.dotScale +
 			" , is invalidate, dotScale must greater than 0, less than or equal to 1, now reset to 1. ")
@@ -1451,18 +1514,10 @@ QRCode.prototype.saveImage = function(saveOptions) {
 	
 	var defOptions = {
 		makeType: 'FILE',
-		path: null,
-		compressionLevel: 6 // ZLIB compression level between 0 and 9
+		path: null
 	}
-
-	saveOptions = Object.assign(defOptions, saveOptions);
-
-	if (saveOptions.compressionLevel < 0 || saveOptions.compressionLevel > 9) {
-		console.warn(saveOptions.compressionLevel +
-			" is invalidate, compressionLevel must between 0 and 9, now reset to 6. ")
-		saveOptions.compressionLevel = 1;
-	}
-	
+    saveOptions = Object.assign(defOptions, saveOptions);
+    
 	var _oDrawing = new Drawing(this._htOption);
 	_oDrawing.makeOptions = saveOptions;
 	
@@ -1482,7 +1537,7 @@ QRCode.prototype.saveImage = function(saveOptions) {
 /**
  * get standard base64 image data url text: data:image/png;base64, ...
  */
-QRCode.prototype.toDataURL = function() {
+QRCode.prototype.toDataURL = function(format) {
 
 	var defOptions = {
 		makeType: 'URL'
