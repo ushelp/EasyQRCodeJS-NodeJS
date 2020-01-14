@@ -3,7 +3,7 @@
  * 
  * NodeJS QRCode generator. Save image to file. Support Dot style, Logo, Background image, Colorful, Title, etc.(Running without DOM on server side)
  * 
- * Version 3.4.0
+ * Version 3.5.0
  * 
  * @author [ inthinkcolor@gmail.com ]
  * 
@@ -989,7 +989,11 @@ var QRCodeLimitLength = [
  * @param {Number} nCorrectLevel
  * @return {Number} type
  */
-function _getTypeNumber(sText, nCorrectLevel) {
+function _getTypeNumber(sText, _htOption) {
+    
+    var nCorrectLevel = _htOption.correctLevel;
+    
+    
 	var nType = 1;
 	var length = _getUTF8Length(sText);
 
@@ -1017,10 +1021,20 @@ function _getTypeNumber(sText, nCorrectLevel) {
 			nType++;
 		}
 	}
-
 	if (nType > QRCodeLimitLength.length) {
 		throw new Error("Too long data");
 	}
+
+    if(_htOption.version!=0){
+        if(nType<=_htOption.version){
+            nType=_htOption.version;
+            _htOption.runVersion = nType;
+        }else{
+            console.warn("QR Code version "+_htOption.version+" too small, run version use "+nType);
+            _htOption.runVersion = nType;
+        }
+    }
+    
 
 	return nType;
 }
@@ -1455,7 +1469,11 @@ function QRCode(vOption) {
         // ==== Images format
         format: 'PNG', // 'PNG', 'JPG'
         compressionLevel: 6, // ZLIB compression level (0-9). default is 6
-        quality: 0.75 // An object specifying the quality (0 to 1). default is 0.75. (JPGs only) 
+        quality: 0.75, // An object specifying the quality (0 to 1). default is 0.75. (JPGs only)
+         
+         // ==== Versions
+         version: 0 // The symbol versions of QR Code range from Version 1 to Version 40. default 0 means automatically choose the closest version based on the text length.
+         
 	};
 	if (typeof vOption === 'string') {
 		vOption = {
@@ -1469,6 +1487,11 @@ function QRCode(vOption) {
 			this._htOption[i] = vOption[i];
 		}
 	}
+    
+    if(this._htOption.version<0 || this._htOption.version>40){
+        console.warn("QR Code version '"+this._htOption.version+"' is invalidate, reset to 0")
+        this._htOption.version=0;
+    }
     
     this._htOption.format=this._htOption.format.toUpperCase();
     if(this._htOption.format!='PNG' && this._htOption.format!='JPG'){
@@ -1500,7 +1523,7 @@ function QRCode(vOption) {
 	this._htOption.height = this._htOption.height + this._htOption.titleHeight;
 
 	this._oQRCode = null;
-	this._oQRCode = new QRCodeModel(_getTypeNumber(this._htOption.text, this._htOption.correctLevel), this._htOption.correctLevel);
+	this._oQRCode = new QRCodeModel(_getTypeNumber(this._htOption.text, this._htOption), this._htOption.correctLevel);
 	this._oQRCode.addData(this._htOption.text);
 	this._oQRCode.make();
 }

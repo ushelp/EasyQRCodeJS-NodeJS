@@ -202,8 +202,14 @@ var qrcode = new QRCode(options);
 			/*
 			format: 'PNG', // 'PNG', 'JPG'
 			compressionLevel: 6, // ZLIB compression level (0-9). default is 6
-			quality: 0.75 // An object specifying the quality (0 to 1). default is 0.75. (JPGs only) 
+			quality: 0.75, // An object specifying the quality (0 to 1). default is 0.75. (JPGs only) 
 			*/
+           
+			// ==== Versions
+			/*
+			version: 0 // The symbol versions of QR Code range from Version 1 to Version 40. default 0 means automatically choose the closest version based on the text length.
+			
+			*/           
 	}
 	```
 
@@ -264,7 +270,10 @@ var qrcode = new QRCode(options);
     | **format** | N | String | `PNG` | 'PNG' or 'JPG'  |
 	| **compressionLevel** | N | Number | `6` | ZLIB compression level between 0 and 9. (**PNGs only**)  |
 	| **quality** | N | Number | `0.75` | An object specifying the quality (0 to 1). (**JPGs only**)  |
+	| Version options| --- | ---|---|---|
+    | **version** | N | Number | `0` | The symbol versions of QR Code range from Version `1` to Version `40`. default 0 means automatically choose the closest version based on the text length.  [Information capacity and versions of QR Codes](https://www.qrcode.com/en/about/version.html) **NOTE**: If you set a value less than the minimum version available for text, the minimum version is automatically used. |
 
+    
 ### Methods
 
 - **saveImage(ImagesFormatOptions)**

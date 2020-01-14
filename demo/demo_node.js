@@ -190,7 +190,8 @@ qrcode.toDataURL().then(data=>{
 // ================================ JPG Test
 
 var config5 = Object.assign({}, config, {
-    format:'JPG'
+    format:'JPG',
+    version: 6
 });
 var config6 = Object.assign({}, config2, {
     format:'JPG'
