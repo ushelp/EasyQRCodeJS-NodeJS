@@ -1100,12 +1100,9 @@ Drawing.prototype.draw = function(oQRCode) {
 
 	this._canvas.width = this._htOption.width + this._htOption.quietZone * 2;
 	this._canvas.height = this._htOption.height + this._htOption.quietZone * 2;
-    
-    this._htOption.autoColor=true;
 
     var autoColorDark="rgba(0, 0, 0, .6)";
     var autoColorLight="rgba(255, 255, 255, .7)";
-    var notAutoColorLight="rgba(0,0,0,0)";
     // JPG 
     if(_htOption.format=='JPG' ){
         
@@ -1214,8 +1211,7 @@ Drawing.prototype.draw = function(oQRCode) {
 								_oContext.strokeStyle = bIsDark ? autoColorDark : autoColorLight;
 								_oContext.fillStyle = bIsDark ? autoColorDark : autoColorLight;
 							} else {
-								// _oContext.strokeStyle = bIsDark ? _htOption.colorDark : notAutoColorLight;
-								_oContext.fillStyle = bIsDark ? _htOption.colorDark : notAutoColorLight;
+								_oContext.fillStyle = bIsDark ? _htOption.colorDark : _htOption.colorLight;
 								_oContext.strokeStyle = _oContext.fillStyle;
 							}
                                 _oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop + nHeight * (1 -
