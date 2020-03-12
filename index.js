@@ -1065,8 +1065,6 @@ var Drawing = function(htOption) {
 	this._oContext.quality = 'best'; //'fast'|'good'|'best'|'nearest'|'bilinear'
 	this._oContext.textDrawingMode = 'path'; // 'path'|'glyph'
 	this._oContext.antialias = 'gray'; // 'default'|'none'|'gray'|'subpixel'
-	this._bIsPainted = false;
-
 
 	this._bSupportDataURI = null;
 };
