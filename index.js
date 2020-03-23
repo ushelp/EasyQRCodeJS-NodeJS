@@ -1,9 +1,9 @@
 /**
- * EasyQRCodeJS
+ * EasyQRCodeJS-NodeJS
  *
  * NodeJS QRCode generator. Save image to file. Support Dot style, Logo, Background image, Colorful, Title, etc.(Running without DOM on server side)
  *
- * Version 3.5.1
+ * Version 3.5.2
  *
  * @author [ inthinkcolor@gmail.com ]
  *
@@ -1241,13 +1241,13 @@ Drawing.prototype.draw = function(oQRCode) {
 			_oContext.font = _htOption.titleFont;
 			_oContext.fillStyle = _htOption.titleColor;
 			_oContext.textAlign = 'center';
-			_oContext.fillText(_htOption.title, t._canvas.width / 2, this._htOption.quietZone+30);
+			_oContext.fillText(_htOption.title, t._canvas.width / 2, this._htOption.quietZone+this._htOption.titleTop);
 		}
 
 		if (_htOption.subTitle) {
 			_oContext.font = _htOption.subTitleFont;
 			_oContext.fillStyle = _htOption.subTitleColor;
-			_oContext.fillText(_htOption.subTitle, t._canvas.width / 2, this._htOption.quietZone+60);
+			_oContext.fillText(_htOption.subTitle, t._canvas.width / 2, this._htOption.quietZone+this._htOption.subTitleTop);
 		}
 
 		if (_htOption.logo) {
@@ -1427,7 +1427,7 @@ function QRCode(vOption) {
 		subTitle: "",
 		subTitleFont: "14px Arial",
 		subTitleColor: "#4F4F4F",
-		subTitleTop: 0, // draws y coordinates. default is 0
+		subTitleTop: 60, // draws y coordinates. default is 0
 
 		logo: undefined,
 		logoWidth: undefined,
