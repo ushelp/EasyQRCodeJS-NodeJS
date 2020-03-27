@@ -227,13 +227,13 @@ var qrcode = new QRCode(options);
     | **quietZone** | N | Number | `0` |  Quiet Zone size | 
     | **quietZoneColor** | N | String | `transparent` |  Background CSS color to Quiet Zone | 
 	| Logo options| --- | ---|---|---|
-	| **logo** | N | String | `undefined` | Logo Image Path. If use relative address, relative to `easy.qrcode.min.js` |  
+	| **logo** | N | String | `undefined` | Logo Image Path or Base64 encoded image. If use relative address, relative to `easy.qrcode.min.js` |  
 	| **logoWidth** | N | Number | `undefined` |  Height |  
 	| **logoHeight** | N | Number | `undefined` |  Width |  
 	| **logoBackgroundTransparent** | N | Boolean | `false` |  Whether the background transparent image(`PNG`) shows transparency. When `true`, `logoBackgroundColor` is invalid |  
 	| **logoBackgroundColor** | N | String | `#ffffff` |  Set Background CSS Color when image background transparent. Valid when `logoBackgroundTransparent` is `false` |  
 	| Backgroud Image options|  ---|--- |---|---|
-	| **backgroundImage** | N | String | `undefined` | Background Image Path. If use relative address, relative to `easy.qrcode.min.js` | 
+	| **backgroundImage** | N | String | `undefined` | Background Image Path or Base64 encoded image. If use relative address, relative to `easy.qrcode.min.js` | 
 	| **backgroundImageAlpha** | N | Number | `1.0` |  Background image transparency. Ranges: `0-1.0`  |  
 	| **autoColor** | N | Boolean | `false` |  Automatic color adjustment | 
 	| Posotion Pattern Color options| --- | ---|---|---|
