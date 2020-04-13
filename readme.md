@@ -4,6 +4,21 @@ EasyQRCodeJS-NodeJS is a NodeJS server side QRCode image generator. Support sett
 
 EasyQRCodeJS-NodeJS 是一个 NodeJS 环境下的服务端 JavaScript QRCode 图片生成模块。支持点状风格，Logo，背景图片，规则色彩控制，标题等设置。
 
+## Table of contents
+
+- [Choose what you need](#choose-what-you-need)
+- [Feature](#feature)
+- [Try It!](#try-it)
+- [Demo preview](#demo-preview)
+- [QR Code Structure](#qr-code-structure)
+- [Installation](#installation)
+- [Basic Usages](#basic-usages)
+- [QRCode API](#qrcode-api)
+  - [Object](#object)
+  - [Methods](#methods)
+- [License](#license)
+- [EasyQRCodeJS-NodeJS-Premium](#easyqrcodejs-nodejs-premium)
+- [End](#end)
 
 ## Choose what you need
 
@@ -86,7 +101,7 @@ npm install easyqrcodejs-nodejs
 
 
 ## Basic Usages
-## 
+
 ```JS
 const QRCode = require('easyqrcodejs-nodejs');
 
@@ -104,9 +119,7 @@ qrcode.saveImage({
 });
 ```
 
-
 ## QRCode API
-
 
 ### Object
 
@@ -299,7 +312,17 @@ var qrcode = new QRCode(options);
 ## License
 MIT License
 
+## EasyQRCodeJS-NodeJS-Premium
 
+With **EasyQRCodeJS-NodeJS-Premium** you can use Canvas to customize any element, Such as Eye frame sharp, Eye ball sharp, QR Body block sharp, etc.
+
+If you need more functions, we can provide you with customized development of API libraries or products. please contact me to buy.
+
+**EasyQRCodeJS-NodeJS-Premium** 让您可以在 QRCode 中通过 Canvas 自定义任何喜欢的元素，例如  Eye frame sharp, Eye ball sharp, QR Body block sharp 等等。
+
+如果您需要更多功能，我们可以为您提供 API 库或产品的定制开发。请联系我购买。
+
+![Premium demo preview](doc/images/demo-premium.png)
 
 ## End
 
