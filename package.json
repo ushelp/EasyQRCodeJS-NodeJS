@@ -1,6 +1,6 @@
 {
 	"name": "easyqrcodejs-nodejs",
-	"version": "3.5.2",
+	"version": "3.5.4",
 	"description": "NodeJS QRCode generator. Support Dot style, Logo, Background image, Colorful, Title, etc.",
 	"main": "index.min.js",
 	"scripts": {},

@@ -3,7 +3,7 @@
  *
  * NodeJS QRCode generator. Save image to file. Support Dot style, Logo, Background image, Colorful, Title, etc.(Running without DOM on server side)
  *
- * Version 3.5.2
+ * Version 3.5.4
  *
  * @author [ inthinkcolor@gmail.com ]
  *
@@ -1118,7 +1118,11 @@ Drawing.prototype.draw = function(oQRCode) {
 
         _oContext.fillStyle = "#ffffff";
         _oContext.fillRect(0, 0, this._canvas.width, this._canvas.height);
-    }
+    }else{
+		_oContext.lineWidth = 0;
+		_oContext.fillStyle =  this._htOption.colorLight;
+		_oContext.fillRect(0, 0, this._canvas.width, this._canvas.height);
+	}
 
 
 	var t = this;

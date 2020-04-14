@@ -79,7 +79,7 @@ var config3={
 	subTitle: 'nodejs', // Subtitle content
 	subTitleFont: "20px Arial", // Subtitle font
 	subTitleColor: "#269926", // Subtitle color
-	subTitleTop: 40, // Subtitle drwa position(Y coordinate), default is 50
+	subTitleTop: 50, // Subtitle drwa position(Y coordinate), default is 50
 	
 	// === Posotion Pattern(Eye) Color
 	PI: '#BF3030',
