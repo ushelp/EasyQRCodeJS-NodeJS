@@ -297,7 +297,9 @@ var qrcode = new QRCode(options);
 	//  Save PNG Images to file
 	qrcode.saveImage({
 		path: 'q.png' // file path
-	});
+	}).then(data=>{
+       console.log("`q-premium1.png` has been Created!");
+    });
 	```
     
 - **toDataURL()**
@@ -307,7 +309,9 @@ var qrcode = new QRCode(options);
 	qrcode.toDataURL().then(data=>{
 		console.info('======QRCode PNG DataURL======')
 		console.info(data)
-	});
+	}).then(data=>{
+        console.log("`q-premium1.png` Base64 image has been generated.");
+    });
 	```
 
 
