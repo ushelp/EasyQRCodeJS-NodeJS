@@ -1,7 +1,7 @@
 {
 	"name": "easyqrcodejs-nodejs",
-	"version": "3.6.0",
-	"description": "NodeJS QRCode generator. Support Dot style, Logo, Background image, Colorful, Title, etc.",
+	"version": "3.7.0",
+	"description": "NodeJS QRCode generator. Can get standard base64 image data url text or save image to file. Cross-browser QRCode generator for pure javascript. Support Dot style, Logo, Background image, Colorful, Title etc. settings. support binary mode.(Running without DOM on server side)",
 	"main": "index.min.js",
 	"scripts": {},
 	"homepage": "https://github.com/ushelp/EasyQRCodeJS-NodeJS#readme",

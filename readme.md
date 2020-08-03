@@ -1,8 +1,8 @@
 # EasyQRCodeJS-NodeJS
 
-EasyQRCodeJS-NodeJS is a NodeJS server side javascript QRCode image generator. Support setting Dot style, Logo, Background image, Colorful, Title and more. 
+EasyQRCodeJS-NodeJS is a NodeJS server side javascript QRCode image generator. Support setting Dot style, Logo, Background image, Colorful, Title and more. Support binary(hex) data mode.
 
-EasyQRCodeJS-NodeJS 是一个 NodeJS 环境下的服务端 JavaScript QRCode 图片生成模块。支持点状风格，Logo，背景图片，规则色彩控制，标题等设置。
+EasyQRCodeJS-NodeJS 是一个 NodeJS 环境下的服务端 JavaScript QRCode 图片生成模块。支持点状风格，Logo，背景图片，规则色彩控制，标题等设置。支持二进制数据模式。
 
 ## Table of contents
 
@@ -55,6 +55,8 @@ EasyQRCodeJS-NodeJS 是一个 NodeJS 环境下的服务端 JavaScript QRCode 图
     - Support Background Image
 
     - Support for title, subtitle settings
+    
+    - Support binary(hex) data mode
 
     
 - **中文**
@@ -80,6 +82,8 @@ EasyQRCodeJS-NodeJS 是一个 NodeJS 环境下的服务端 JavaScript QRCode 图
     - 支持 Background Image 背景图片
 
     - 支持标题，副标题设置
+
+    - 二进制数据模式支持
 
 
 ## Try It!
@@ -222,9 +226,13 @@ var qrcode = new QRCode(options);
 	   
 		// ==== Versions
 		/*
-		version: 0 // The symbol versions of QR Code range from Version 1 to Version 40. default 0 means automatically choose the closest version based on the text length.
-		
-		*/           
+		version: 0, // The symbol versions of QR Code range from Version 1 to Version 40. default 0 means automatically choose the closest version based on the text length.
+		*/     
+       
+		// ===== Binary(hex) data mode
+		/*
+		binary: false // Whether it is binary mode, default is text mode. 
+		*/ 
 }
 ```
 
@@ -287,6 +295,8 @@ var qrcode = new QRCode(options);
 | **quality** | N | Number | `0.75` | An object specifying the quality (0 to 1). (**JPGs only**)  |
 | Version options| --- | ---|---|---|
 | **version** | N | Number | `0` | The symbol versions of QR Code range from Version `1` to Version `40`. default 0 means automatically choose the closest version based on the text length.  [Information capacity and versions of QR Codes](https://www.qrcode.com/en/about/version.html) **NOTE**: If you set a value less than the minimum version available for text, the minimum version is automatically used. |
+| Binary(hex) data model options| --- | ---|---|---|
+| **binary** | N | Boolean | `false` | Whether it is binary mode, default is text mode.  | 
 
     
 ### Methods

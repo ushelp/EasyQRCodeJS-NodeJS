@@ -1,9 +1,9 @@
 /**
  * EasyQRCodeJS-NodeJS
  *
- * NodeJS QRCode generator. Save image to file. Support Dot style, Logo, Background image, Colorful, Title, etc.(Running without DOM on server side)
+ * NodeJS QRCode generator. Can get standard base64 image data url text or save image to file. Cross-browser QRCode generator for pure javascript. Support Dot style, Logo, Background image, Colorful, Title etc. settings. Support binary(hex) data mode. (Running without DOM on server side)
  *
- * Version 3.6.0
+ * Version 3.7.0
  *
  * @author [ inthinkcolor@gmail.com ]
  *
@@ -25,7 +25,7 @@ var {
 
 var fs = require('fs');
 
-function QR8bitByte(data) {
+function QR8bitByte(data, binary) {
     this.mode = QRMode.MODE_8BIT_BYTE;
     this.data = data;
     this.parsedData = [];
@@ -35,20 +35,24 @@ function QR8bitByte(data) {
         var byteArray = [];
         var code = this.data.charCodeAt(i);
 
-        if (code > 0x10000) {
-            byteArray[0] = 0xF0 | ((code & 0x1C0000) >>> 18);
-            byteArray[1] = 0x80 | ((code & 0x3F000) >>> 12);
-            byteArray[2] = 0x80 | ((code & 0xFC0) >>> 6);
-            byteArray[3] = 0x80 | (code & 0x3F);
-        } else if (code > 0x800) {
-            byteArray[0] = 0xE0 | ((code & 0xF000) >>> 12);
-            byteArray[1] = 0x80 | ((code & 0xFC0) >>> 6);
-            byteArray[2] = 0x80 | (code & 0x3F);
-        } else if (code > 0x80) {
-            byteArray[0] = 0xC0 | ((code & 0x7C0) >>> 6);
-            byteArray[1] = 0x80 | (code & 0x3F);
-        } else {
+        if (binary) {
             byteArray[0] = code;
+        } else {
+            if (code > 0x10000) {
+                byteArray[0] = 0xF0 | ((code & 0x1C0000) >>> 18);
+                byteArray[1] = 0x80 | ((code & 0x3F000) >>> 12);
+                byteArray[2] = 0x80 | ((code & 0xFC0) >>> 6);
+                byteArray[3] = 0x80 | (code & 0x3F);
+            } else if (code > 0x800) {
+                byteArray[0] = 0xE0 | ((code & 0xF000) >>> 12);
+                byteArray[1] = 0x80 | ((code & 0xFC0) >>> 6);
+                byteArray[2] = 0x80 | (code & 0x3F);
+            } else if (code > 0x80) {
+                byteArray[0] = 0xC0 | ((code & 0x7C0) >>> 6);
+                byteArray[1] = 0x80 | (code & 0x3F);
+            } else {
+                byteArray[0] = code;
+            }
         }
 
         this.parsedData.push(byteArray);
@@ -84,8 +88,8 @@ function QRCodeModel(typeNumber, errorCorrectLevel) {
 }
 
 QRCodeModel.prototype = {
-    addData: function(data) {
-        var newData = new QR8bitByte(data);
+    addData: function(data, binary) {
+        var newData = new QR8bitByte(data, binary);
         this.dataList.push(newData);
         this.dataCache = null;
     },
@@ -1046,7 +1050,7 @@ function _getTypeNumber(sText, _htOption) {
 
 function _getUTF8Length(sText) {
     var replacedText = encodeURI(sText).toString().replace(/\%[0-9a-fA-F]{2}/g, 'a');
-    return replacedText.length + (replacedText.length != sText ? 3 : 0);
+    return replacedText.length + (replacedText.length != sText.length ? 3 : 0);
 }
 
 /**
@@ -1503,7 +1507,11 @@ function QRCode(vOption) {
         quality: 0.75, // An object specifying the quality (0 to 1). default is 0.75. (JPGs only)
 
         // ==== Versions
-        version: 0 // The symbol versions of QR Code range from Version 1 to Version 40. default 0 means automatically choose the closest version based on the text length.
+        version: 0, // The symbol versions of QR Code range from Version 1 to Version 40. default 0 means automatically choose the closest version based on the text length.
+
+        // ==== binary(hex) data mode
+        binary: false // Whether it is binary mode, default is text mode. 
+
 
     };
     if (typeof vOption === 'string') {
@@ -1555,7 +1563,7 @@ function QRCode(vOption) {
 
     this._oQRCode = null;
     this._oQRCode = new QRCodeModel(_getTypeNumber(this._htOption.text, this._htOption), this._htOption.correctLevel);
-    this._oQRCode.addData(this._htOption.text);
+    this._oQRCode.addData(this._htOption.text, this._htOption.binary);
     this._oQRCode.make();
 }
 
