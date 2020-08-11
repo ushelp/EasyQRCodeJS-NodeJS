@@ -15,9 +15,10 @@ EasyQRCodeJS-NodeJS 是一个 NodeJS 环境下的服务端 JavaScript QRCode 图
 - [Installation](#installation)
 - [Basic Usages](#basic-usages)
 - [QRCode API](#qrcode-api)
-- [Object](#object)
-- [Options](#options)
-- [Methods](#methods)
+    - [Object](#object)
+    - [Options](#options)
+    - [Methods](#methods)
+- [TypeScript Support](#typescript-support)
 - [License](#license)
 - [EasyQRCodeJS-NodeJS-Premium](#easyqrcodejs-nodejs-premium)
 - [End](#end)
@@ -28,7 +29,7 @@ EasyQRCodeJS-NodeJS 是一个 NodeJS 环境下的服务端 JavaScript QRCode 图
 | --- | --- |
 | [EasyQRCodeJS](https://github.com/ushelp/EasyQRCodeJS) | **Running with DOM on CLIENT-SIDE .** Browser(IE6+, Chrome, Firefox, Safari, Opera, Mobile Safari, Android, Windows Mobile, ETC.), Electron, NW.js, ETC.  |
 | [EasyQRCodeJS-NodeJS](https://github.com/ushelp/EasyQRCodeJS-NodeJS) | **Running without DOM on SERVER-SIDE**. Save image to file or get data url text.  NodeJS, Electron, NW.js, ETC.|
-
+| [EasyQRCode-React-Native](https://github.com/ushelp/EasyQRCode-React-Native) | **A QRCode generator for React Native**. Generate QRCode image or get base64 data url text. |
 
 ## Feature
 
@@ -58,6 +59,7 @@ EasyQRCodeJS-NodeJS 是一个 NodeJS 环境下的服务端 JavaScript QRCode 图
     
     - Support binary(hex) data mode
 
+    - Support TypeScript
     
 - **中文**
 
@@ -85,6 +87,7 @@ EasyQRCodeJS-NodeJS 是一个 NodeJS 环境下的服务端 JavaScript QRCode 图
 
     - 二进制数据模式支持
 
+    - TypeScript 支持
 
 ## Try It!
 
@@ -324,6 +327,13 @@ var qrcode = new QRCode(options);
     });
 	```
 
+## TypeScript Support
+
+Update to version `3.7.1+`.
+
+```Javascript
+import QRCode = require("easyqrcodejs-nodejs")
+```
 
 ## License
 MIT License
