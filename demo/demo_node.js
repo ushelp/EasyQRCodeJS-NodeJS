@@ -153,7 +153,7 @@ var config4={
 	
 	// === Logo
 	// logo: "https://avatars1.githubusercontent.com/u/4082017?s=160&v=4", // LOGO
-	logo: "avatars.png", // LOGO
+	logo: "./avatars.png", // LOGO
 	//					logo:"http://127.0.0.1:8020/easy-qrcodejs/demo/logo.png",  
 	//					logoWidth:80, 
 	//					logoHeight:80,
@@ -222,8 +222,12 @@ qrcode8.saveImage({
 	path: 'q4.jpg'
 });
 
-qrcode5.toDataURL().then(data=>{
-	console.info('======QRCode JPG DataURL======')
+qrcode5.toSVGText().then(data=>{
+	console.info('======QRCode SVG Data Text======')
 	console.info(data)
 	console.info('')
 });
+
+qrcode8.saveSVG({
+    path: 'qrcode.svg'
+})

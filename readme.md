@@ -1,8 +1,8 @@
 # EasyQRCodeJS-NodeJS
 
-EasyQRCodeJS-NodeJS is a NodeJS server side javascript QRCode image generator. Support setting Dot style, Logo, Background image, Colorful, Title and more. Support binary(hex) data mode.
+EasyQRCodeJS-NodeJS is a NodeJS server side javascript QRCode image(PNG/JPEG/SVG/Base64 data url) generator. Support setting Dot style, Logo, Background image, Colorful, Title and more. Support binary(hex) data mode.
 
-EasyQRCodeJS-NodeJS 是一个 NodeJS 环境下的服务端 JavaScript QRCode 图片生成模块。支持点状风格，Logo，背景图片，规则色彩控制，标题等设置。支持二进制数据模式。
+EasyQRCodeJS-NodeJS 是一个 NodeJS 环境下的服务端 JavaScript QRCode 图片(PNG/JPEG/SVG/Base64 data url)生成模块。支持点状风格，Logo，背景图片，规则色彩控制，标题等设置。支持二进制数据模式。
 
 ## Table of contents
 
@@ -29,7 +29,7 @@ EasyQRCodeJS-NodeJS 是一个 NodeJS 环境下的服务端 JavaScript QRCode 图
 | --- | --- |
 | [EasyQRCodeJS](https://github.com/ushelp/EasyQRCodeJS) | **Running with DOM on CLIENT-SIDE .** Browser(IE6+, Chrome, Firefox, Safari, Opera, Mobile Safari, Android, Windows Mobile, ETC.), Electron, NW.js, ETC.  |
 | [EasyQRCodeJS-NodeJS](https://github.com/ushelp/EasyQRCodeJS-NodeJS) | **Running without DOM on SERVER-SIDE**. Save image to file or get data url text.  NodeJS, Electron, NW.js, ETC.|
-| [EasyQRCode-React-Native](https://github.com/ushelp/EasyQRCode-React-Native) | **A QRCode generator for React Native**. Generate QRCode image or get base64 data url text. |
+| [EasyQRCode-React-Native](https://github.com/ushelp/EasyQRCode-React-Native) | **A QRCode generator for React Native**. Generate QRCode image(PNG/JPEG/SVG/Base64 data url). |
 
 ## Feature
 
@@ -37,10 +37,12 @@ EasyQRCodeJS-NodeJS 是一个 NodeJS 环境下的服务端 JavaScript QRCode 图
 
     - Save QRCode image file without DOM on server side
 
-	- Support save PNG image file
+	- Support save PNG/JPEG/SVG image file
 
 	- Support get standard base64 image data url text: `data:image/png;base64, ...`
 
+	- Support get SVG data text: `<svg xmlns:xlink="http://www.w3.org/1999/xlink" ...`
+    
     - Required Patterns that support dot style
  
     - Support for Quiet Zone settings
@@ -68,7 +70,9 @@ EasyQRCodeJS-NodeJS 是一个 NodeJS 环境下的服务端 JavaScript QRCode 图
 	- 支持存储为 PNG 图片
 
 	- 支持获得 Base64 编码的标准图形 URL 字符串：`data:image/png;base64, ...`
-
+    
+    - 支持获得 SVG 图形文本: `<svg xmlns:xlink="http://www.w3.org/1999/xlink" ...`
+    
     - 支持点形风格的 Required Patterns
 
     - 支持 Quiet Zone 设置
@@ -320,13 +324,21 @@ var qrcode = new QRCode(options);
 	```JS
 	// Get standard base64 image data url text: 'data:image/png;base64, ...'
 	qrcode.toDataURL().then(data=>{
-		console.info('======QRCode PNG DataURL======')
-		console.info(data)
-	}).then(data=>{
-        console.log("`q-premium1.png` Base64 image has been generated.");
-    });
+		console.info('======QRCode PNG Base64 DataURL======')
+		console.info(data);
+	});
 	```
-
+    
+- **toSVGText()**
+ 
+	```JS
+	// Get SVG data text: '<svg xmlns:xlink="http://www.w3.org/1999/xlink" ...'
+	qrcode.toSVGText().then(data=>{
+		console.info('======QRCode SVG Data Text======')
+		console.info(data)
+	});
+	```
+    
 ## TypeScript Support
 
 Update to version `3.7.1+`.

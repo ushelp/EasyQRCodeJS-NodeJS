@@ -1,9 +1,9 @@
 /**
  * EasyQRCodeJS-NodeJS
  *
- * NodeJS QRCode generator. Can get standard base64 image data url text or save image to file. Cross-browser QRCode generator for pure javascript. Support Dot style, Logo, Background image, Colorful, Title etc. settings. Support binary(hex) data mode. (Running without DOM on server side)
+ * NodeJS QRCode generator. Can save image or svg to file, get standard base64 image data url text or get SVG serialized text. Cross-browser QRCode generator for pure javascript. Support Dot style, Logo, Background image, Colorful, Title etc. settings. support binary mode.(Running without DOM on server side)
  *
- * Version 3.7.2
+ * Version 4.0.0
  *
  * @author [ inthinkcolor@gmail.com ]
  *
@@ -23,7 +23,14 @@ var {
     Image
 } = require('canvas');
 
+var jsdom = require('jsdom');
+var C2S = require('./canvas2svg');
 var fs = require('fs');
+
+const {
+    JSDOM
+} = jsdom;
+const win = new JSDOM().window;
 
 function QR8bitByte(data, binary) {
     this.mode = QRMode.MODE_8BIT_BYTE;
@@ -1063,17 +1070,12 @@ function _getUTF8Length(sText) {
 var Drawing = function(htOption) {
     this._bIsPainted = false;
     this._htOption = htOption;
-
-
     this._canvas = createCanvas(200, 200)
-
-
-
-    this._oContext = this._canvas.getContext("2d");
-    this._oContext.patternQuality = 'best'; //'fast'|'good'|'best'|'nearest'|'bilinear'
-    this._oContext.quality = 'best'; //'fast'|'good'|'best'|'nearest'|'bilinear'
-    this._oContext.textDrawingMode = 'path'; // 'path'|'glyph'
-    this._oContext.antialias = 'gray'; // 'default'|'none'|'gray'|'subpixel'
+    if (this._htOption._drawer == 'svg') {
+        this._oContext = {};
+    } else {
+        this._oContext = this._canvas.getContext("2d");
+    }
 
     this._bSupportDataURI = null;
 };
@@ -1084,11 +1086,7 @@ var Drawing = function(htOption) {
  * @param {QRCode} oQRCode
  */
 Drawing.prototype.draw = function(oQRCode) {
-
-
-    var _oContext = this._oContext;
     var _htOption = this._htOption;
-
 
     if (!_htOption.title && !_htOption.subTitle) {
         _htOption.height -= _htOption.titleHeight;
@@ -1107,6 +1105,22 @@ Drawing.prototype.draw = function(oQRCode) {
 
     this._canvas.width = this._htOption.width + this._htOption.quietZone * 2;
     this._canvas.height = this._htOption.height + this._htOption.quietZone * 2;
+
+    if (this._htOption._drawer == 'svg') {
+        this._oContext = new C2S({
+            document: win.document,
+            XMLSerializer: win.XMLSerializer,
+            width: this._canvas.width,
+            height: this._canvas.height
+        });
+    }
+
+    this._oContext.patternQuality = 'best'; //'fast'|'good'|'best'|'nearest'|'bilinear'
+    this._oContext.quality = 'best'; //'fast'|'good'|'best'|'nearest'|'bilinear'
+    this._oContext.textDrawingMode = 'path'; // 'path'|'glyph'
+    this._oContext.antialias = 'gray'; // 'default'|'none'|'gray'|'subpixel'
+
+    var _oContext = this._oContext;
 
     var autoColorDark = "rgba(0, 0, 0, .6)";
     var autoColorLight = "rgba(255, 255, 255, .7)";
@@ -1274,8 +1288,6 @@ Drawing.prototype.draw = function(oQRCode) {
             img.src = _htOption.logo;
             var _this = this;
 
-
-
             function generateLogoImg(img) {
                 var imgContainerW = Math.round(_htOption.width / 3.5);
                 var imgContainerH = Math.round(_htOption.height / 3.5);
@@ -1374,51 +1386,58 @@ Drawing.prototype.makeImage = function() {
         if (this._htOption.onRenderingStart) {
             this._htOption.onRenderingStart(this._htOption);
         }
-
-        var out = fs.createWriteStream(makeOptions.path)
-
-        var stream = undefined;
-
-
-
-        if (this._htOption.format == 'PNG') {
-            stream = this._canvas.createPNGStream({
-                compressionLevel: this._htOption.compressionLevel
-            })
+        if (this._htOption._drawer == 'svg') {
+            let data = this._oContext.getSerializedSvg();
+            fs.writeFile(makeOptions.path, data, 'utf8', function(err) {
+                if (err) {
+                    t.reject(err);
+                }
+                t.resolve({});
+            });
         } else {
-            stream = this._canvas.createJPEGStream({
-                quality: this._htOption.quality
+            var out = fs.createWriteStream(makeOptions.path)
+
+            var stream = undefined;
+
+            if (this._htOption.format == 'PNG') {
+                stream = this._canvas.createPNGStream({
+                    compressionLevel: this._htOption.compressionLevel
+                })
+            } else {
+                stream = this._canvas.createJPEGStream({
+                    quality: this._htOption.quality
+                })
+            }
+
+            stream.pipe(out);
+            out.on('finish', () => {
+                t.resolve({});
             })
         }
 
-        stream.pipe(out);
-        out.on('finish', () => {
-            t.resolve({});
-        })
-
-
     } else if (makeOptions.makeType == 'URL') {
+
+
 
         if (this._htOption.onRenderingStart) {
             this._htOption.onRenderingStart(this._htOption);
         }
-
-
-        if (this._htOption.format == 'PNG') {
-            // dataUrl = this._canvas.toDataURL()
-            this._canvas.toDataURL((err, data) => {
-                t.resolve(data);
-            }) // defaults to PNG
+        if (this._htOption._drawer == 'svg') {
+            let data = this._oContext.getSerializedSvg();
+            t.resolve(data);
         } else {
-            this._canvas.toDataURL('image/jpeg', (err, data) => {
-                t.resolve(data);
-            })
+            if (this._htOption.format == 'PNG') {
+                // dataUrl = this._canvas.toDataURL()
+                this._canvas.toDataURL((err, data) => {
+                    t.resolve(data);
+                }) // defaults to PNG
+            } else {
+                this._canvas.toDataURL('image/jpeg', (err, data) => {
+                    t.resolve(data);
+                })
+            }
         }
-
-
     }
-
-
 };
 
 /**
@@ -1511,8 +1530,6 @@ function QRCode(vOption) {
 
         // ==== binary(hex) data mode
         binary: false // Whether it is binary mode, default is text mode. 
-
-
     };
     if (typeof vOption === 'string') {
         vOption = {
@@ -1559,6 +1576,10 @@ function QRCode(vOption) {
         this._htOption.backgroundImageAlpha = 1;
     }
 
+    if (!this._htOption.drawer || (this._htOption.drawer != 'svg' && this._htOption.drawer != 'canvas')) {
+        this._htOption.drawer = 'canvas';
+    }
+
     this._htOption.height = this._htOption.height + this._htOption.titleHeight;
 
     this._oQRCode = null;
@@ -1567,59 +1588,87 @@ function QRCode(vOption) {
     this._oQRCode.make();
 }
 
+// Save to image file or svg file
+QRCode.prototype._toSave = function(saveOptions) {
+    var _oDrawing = new Drawing(this._htOption);
+    _oDrawing.makeOptions = saveOptions;
+
+    try {
+        var t = this;
+        return new Promise((resolve, reject) => {
+            _oDrawing.resolve = resolve;
+            _oDrawing.reject = reject;
+            _oDrawing.draw(t._oQRCode);
+        })
+
+    } catch (e) {
+        console.error(e)
+    }
+}
 
 /**
  * Support save PNG image file
  * @param {Object} path Make the QRCode
  */
 QRCode.prototype.saveImage = function(saveOptions) {
-
     var defOptions = {
         makeType: 'FILE',
         path: null
     }
+    this._htOption._drawer = 'canvas';
     saveOptions = Object.assign(defOptions, saveOptions);
-
-    var _oDrawing = new Drawing(this._htOption);
-    _oDrawing.makeOptions = saveOptions;
-
-    try {
-        var t = this;
-        return new Promise(resolve => {
-            _oDrawing.resolve = resolve;
-            _oDrawing.draw(t._oQRCode);
-        })
-
-    } catch (e) {
-        console.error(e)
-    }
+    return this._toSave(saveOptions);
 };
 
-
 /**
- * get standard base64 image data url text: data:image/png;base64, ...
+ * Save to SVG file
  */
-QRCode.prototype.toDataURL = function(format) {
+QRCode.prototype.saveSVG = function(saveOptions) {
+    var defOptions = {
+        makeType: 'FILE',
+        path: null
+    }
+    this._htOption._drawer = 'svg';
+    saveOptions = Object.assign(defOptions, saveOptions);
+    return this._toSave(saveOptions);
+};
 
+// Get Base64 or SVG text
+QRCode.prototype._toData = function(drawer) {
     var defOptions = {
         makeType: 'URL'
     }
+    this._htOption._drawer = drawer;
 
     var _oDrawing = new Drawing(this._htOption);
     _oDrawing.makeOptions = defOptions;
 
     try {
         var t = this;
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             _oDrawing.resolve = resolve;
+            _oDrawing.reject = reject;
             _oDrawing.draw(t._oQRCode);
         })
 
     } catch (e) {
         console.error(e)
     }
+}
 
+/**
+ *Get standard base64 image data url text: 'data:image/png;base64, ...' or SVG data text
+ */
+QRCode.prototype.toDataURL = function() {
+    return this._toData('canvas');
 };
+/**
+ * Get SVG data text: '<svg xmlns:xlink="http://www.w3.org/1999/xlink" ...'
+ */
+QRCode.prototype.toSVGText = function() {
+    return this._toData('svg');
+};
+
 
 /**
  * @name QRCode.CorrectLevel
