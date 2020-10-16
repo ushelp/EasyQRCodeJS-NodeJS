@@ -318,7 +318,18 @@ var qrcode = new QRCode(options);
        console.log("`q-premium1.png` has been Created!");
     });
 	```
-    
+
+- **saveSVG(ImagesFormatOptions)**
+
+	```JS
+	//  Save SVG to file
+	qrcode.saveSVG({
+		path: 'qrcode.svg' // file path
+	}).then(data=>{
+       console.log("`qrcode.svg` has been Created!");
+    });
+	```
+        
 - **toDataURL()**
  
 	```JS
