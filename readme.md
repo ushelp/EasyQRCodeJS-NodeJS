@@ -152,12 +152,24 @@ var qrcode = new QRCode(options);
 		colorDark : "#000000",
 		colorLight : "#ffffff",
 		correctLevel : QRCode.CorrectLevel.H, // L, M, Q, H
-		dotScale: 1 // Must be greater than 0, less than or equal to 1. default is 1
-		
+
+        // ====== dotScale
+         /*
+        dotScale: 1, // For body block, must be greater than 0, less than or equal to 1. default is 1
+        
+        dotScaleTiming: 1, // Dafault for timing block , must be greater than 0, less than or equal to 1. default is 1
+        dotScaleTiming_H: undefined, // For horizontal timing block, must be greater than 0, less than or equal to 1. default is 1
+        dotScaleTiming_V: undefined, // For vertical timing block, must be greater than 0, less than or equal to 1. default is 1
+        
+        dotScaleA: 1, // Dafault for alignment block, must be greater than 0, less than or equal to 1. default is 1
+        dotScaleAO: undefined, // For alignment outer block, must be greater than 0, less than or equal to 1. default is 1
+        dotScaleAI: undefined, // For alignment inner block, must be greater than 0, less than or equal to 1. default is 1
+        */
+
 		// ====== Quiet Zone
 		/*
 		quietZone: 0,
-		quietZoneColor: 'transparent',
+		quietZoneColor: "rgba(0,0,0,0)",
 		*/
 		
 		// ====== Logo
@@ -252,10 +264,17 @@ var qrcode = new QRCode(options);
 | **colorDark** | N | String | `#000000` | Dark CSS color | 
 | **colorLight** | N | String | `#ffffff` | Light CSS color | 
 | **correctLevel** | N | Enum | `QRCode.CorrectLevel.H` | `QRCode.CorrectLevel.H`<br/>`QRCode.CorrectLevel.Q` <br/> `QRCode.CorrectLevel.M` <br/> `QRCode.CorrectLevel.L`| 
-| **dotScale** | N | Number | `1.0` |Dot style required Patterns. Ranges: `0-1.0` | 
+| Dot style| --- | ---|---|---|
+| **dotScale** | N | Number | `1.0` |Dot style scale. Ranges: `0-1.0` |
+| **dotScaleTiming** | N | Number | `1.0` |Dot style scale for timing. Ranges: `0-1.0` |
+| **dotScaleTiming_V** | N | Number | `undefined` |Dot style scale for horizontal timing. Ranges: `0-1.0` |
+| **dotScaleTiming_H** | N | Number | `undefined` |Dot style scale for vertical timing. Ranges: `0-1.0` |
+| **dotScaleA** | N | Number | `1.0` |Dot style scale for alignment. Ranges: `0-1.0` | 
+| **dotScaleAO** | N | Number | `undefined` |Dot style scale for alignment outer. Ranges: `0-1.0` |
+| **dotScaleAI** | N | Number | `undefined` |Dot style scale for alignment inner. Ranges: `0-1.0` |
 | Quiet Zone| --- | ---|---|---|
 | **quietZone** | N | Number | `0` |  Quiet Zone size | 
-| **quietZoneColor** | N | String | `transparent` |  Background CSS color to Quiet Zone | 
+| **quietZoneColor** | N | String | `rgba(0,0,0,0)` |  Background CSS color to Quiet Zone | 
 | Logo options| --- | ---|---|---|
 | **logo** | N | String | `undefined` | Logo Image Path or Base64 encoded image. If use relative address, relative to `easy.qrcode.min.js` |  
 | **logoWidth** | N | Number | `undefined` |  Height |  

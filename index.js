@@ -3,7 +3,7 @@
  *
  * NodeJS QRCode generator. Can save image or svg to file, get standard base64 image data url text or get SVG serialized text. Cross-browser QRCode generator for pure javascript. Support Dot style, Logo, Background image, Colorful, Title etc. settings. support binary mode.(Running without DOM on server side)
  *
- * Version 4.0.0
+ * Version 4.1.0
  *
  * @author [ inthinkcolor@gmail.com ]
  *
@@ -1129,7 +1129,7 @@ Drawing.prototype.draw = function(oQRCode) {
     // JPG
     if (_htOption.format == 'JPG') {
 
-        if (_htOption.quietZoneColor == 'transparent') {
+        if (_htOption.quietZoneColor == "rgba(0,0,0,0)") {
             _htOption.quietZoneColor = '#ffffff';
         }
 
@@ -1196,41 +1196,57 @@ Drawing.prototype.draw = function(oQRCode) {
 
                 var eye = oQRCode.getEye(row, col); // { isDark: true/false, type: PO_TL, PI_TL, PO_TR, PI_TR, PO_BL, PI_BL };
 
+                var nowDotScale = _htOption.dotScale;
+
                 if (eye) {
                     // Is eye
                     bIsDark = eye.isDarkBlock;
                     var type = eye.type;
+                    if (type == 'AO') {
+                        nowDotScale = _htOption.dotScaleAO;
+                    } else if (type == 'AI') {
+                        nowDotScale = _htOption.dotScaleAI;
+                    } else {
+                        nowDotScale = 1;
+                    }
 
                     // PX_XX, PX, colorDark, colorLight
                     var eyeColorDark = _htOption[type] || _htOption[type.substring(0, 2)] || _htOption.colorDark;
-
                     _oContext.lineWidth = 0;
                     _oContext.strokeStyle = bIsDark ? eyeColorDark : _htOption.colorLight;
                     _oContext.fillStyle = bIsDark ? eyeColorDark : _htOption.colorLight;
 
-                    _oContext.fillRect(nLeft, _htOption.titleHeight + nTop, nWidth, nHeight);
-
+                    _oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop + nHeight * (1 -  nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale);
                 } else {
                     _oContext.lineWidth = 0;
                     _oContext.strokeStyle = bIsDark ? _htOption.colorDark : _htOption.colorLight;
                     _oContext.fillStyle = bIsDark ? _htOption.colorDark : _htOption.colorLight;
 
-                    var nowDotScale = _htOption.dotScale;
+                    if (_htOption.backgroundImage) {
+
+                        if (_htOption.autoColor) {
+                            _oContext.strokeStyle = bIsDark ? autoColorDark : autoColorLight;
+                            _oContext.fillStyle = bIsDark ? autoColorDark : autoColorLight;
+                        } else {
+                            _oContext.fillStyle = bIsDark ? _htOption.colorDark : _htOption.colorLight;
+                            _oContext.strokeStyle = _oContext.fillStyle;
+                        }
+                    } else {
+                        _oContext.strokeStyle = _oContext.fillStyle;
+
+                    }
+
                     if (row == 6) {
                         // Timing Pattern
-                        nowDotScale = 1;
-                        var timingHColorDark = _htOption.timing_H || _htOption.timing || _htOption.colorDark;
-                        _oContext.fillStyle = bIsDark ? timingHColorDark : _htOption.colorLight;
-                        _oContext.strokeStyle = _oContext.fillStyle;
+                        nowDotScale = _htOption.dotScaleTiming_H;
+
                         _oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop +
                             nHeight * (1 -
                                 nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale);
                     } else if (col == 6) {
                         // Timing Pattern
-                        nowDotScale = 1;
-                        var timingVColorDark = _htOption.timing_V || _htOption.timing || _htOption.colorDark;
-                        _oContext.fillStyle = bIsDark ? timingVColorDark : _htOption.colorLight;
-                        _oContext.strokeStyle = _oContext.fillStyle;
+                        nowDotScale = _htOption.dotScaleTiming_V;
+
                         _oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop +
                             nHeight * (1 -
                                 nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale);
@@ -1238,19 +1254,12 @@ Drawing.prototype.draw = function(oQRCode) {
 
                         if (_htOption.backgroundImage) {
 
-                            if (_htOption.autoColor) {
-                                _oContext.strokeStyle = bIsDark ? autoColorDark : autoColorLight;
-                                _oContext.fillStyle = bIsDark ? autoColorDark : autoColorLight;
-                            } else {
-                                _oContext.fillStyle = bIsDark ? _htOption.colorDark : _htOption.colorLight;
-                                _oContext.strokeStyle = _oContext.fillStyle;
-                            }
                             _oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop +
                                 nHeight * (1 -
                                     nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale);
 
                         } else {
-                            _oContext.strokeStyle = _oContext.fillStyle;
+
 
                             _oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop +
                                 nHeight * (1 -
@@ -1470,10 +1479,18 @@ function QRCode(vOption) {
         colorLight: "#ffffff",
         correctLevel: QRErrorCorrectLevel.H,
 
-        dotScale: 1, // Must be greater than 0, less than or equal to 1. default is 1
+        dotScale: 1, // For body block, must be greater than 0, less than or equal to 1. default is 1
+
+        dotScaleTiming: 1, // Dafault for timing block , must be greater than 0, less than or equal to 1. default is 1
+        dotScaleTiming_H: undefined, // For horizontal timing block, must be greater than 0, less than or equal to 1. default is 1
+        dotScaleTiming_V: undefined, // For vertical timing block, must be greater than 0, less than or equal to 1. default is 1
+
+        dotScaleA: 1, // Dafault for alignment block, must be greater than 0, less than or equal to 1. default is 1
+        dotScaleAO: undefined, // For alignment outer block, must be greater than 0, less than or equal to 1. default is 1
+        dotScaleAI: undefined, // For alignment inner block, must be greater than 0, less than or equal to 1. default is 1
 
         quietZone: 0,
-        quietZoneColor: 'transparent',
+        quietZoneColor: "rgba(0,0,0,0)",
 
         title: "",
         titleFont: "bold 16px Arial",
@@ -1570,6 +1587,66 @@ function QRCode(vOption) {
             " , is invalidate, dotScale must greater than 0, less than or equal to 1, now reset to 1. ")
         this._htOption.dotScale = 1;
     }
+
+    if (this._htOption.dotScaleTiming < 0 || this._htOption.dotScaleTiming > 1) {
+        console.warn(this._htOption.dotScaleTiming +
+            " , is invalidate, dotScaleTiming must greater than 0, less than or equal to 1, now reset to 1. "
+        )
+        this._htOption.dotScaleTiming = 1;
+    }
+    if (this._htOption.dotScaleTiming_H) {
+        if (this._htOption.dotScaleTiming_H < 0 || this._htOption.dotScaleTiming_H > 1) {
+            console.warn(this._htOption.dotScaleTiming_H +
+                " , is invalidate, dotScaleTiming_H must greater than 0, less than or equal to 1, now reset to 1. "
+            )
+            this._htOption.dotScaleTiming_H = 1;
+        }
+    } else {
+        this._htOption.dotScaleTiming_H = this._htOption.dotScaleTiming;
+    }
+
+    if (this._htOption.dotScaleTiming_V) {
+        if (this._htOption.dotScaleTiming_V < 0 || this._htOption.dotScaleTiming_V > 1) {
+            console.warn(this._htOption.dotScaleTiming_V +
+                " , is invalidate, dotScaleTiming_V must greater than 0, less than or equal to 1, now reset to 1. "
+            )
+            this._htOption.dotScaleTiming_V = 1;
+        }
+    } else {
+        this._htOption.dotScaleTiming_V = this._htOption.dotScaleTiming;
+    }
+
+
+
+    if (this._htOption.dotScaleA < 0 || this._htOption.dotScaleA > 1) {
+        console.warn(this._htOption.dotScaleA +
+            " , is invalidate, dotScaleA must greater than 0, less than or equal to 1, now reset to 1. "
+        )
+        this._htOption.dotScaleA = 1;
+    }
+    if (this._htOption.dotScaleAO) {
+        if (this._htOption.dotScaleAO < 0 || this._htOption.dotScaleAO > 1) {
+            console.warn(this._htOption.dotScaleAO +
+                " , is invalidate, dotScaleAO must greater than 0, less than or equal to 1, now reset to 1. "
+            )
+            this._htOption.dotScaleAO = 1;
+        }
+    } else {
+        this._htOption.dotScaleAO = this._htOption.dotScaleA;
+    }
+    if (this._htOption.dotScaleAI) {
+        if (this._htOption.dotScaleAI < 0 || this._htOption.dotScaleAI > 1) {
+            console.warn(this._htOption.dotScaleAI +
+                " , is invalidate, dotScaleAI must greater than 0, less than or equal to 1, now reset to 1. "
+            )
+            this._htOption.dotScaleAI = 1;
+        }
+    } else {
+        this._htOption.dotScaleAI = this._htOption.dotScaleA;
+    }
+
+
+
     if (this._htOption.backgroundImageAlpha < 0 || this._htOption.backgroundImageAlpha > 1) {
         console.warn(this._htOption.backgroundImageAlpha +
             " , is invalidate, backgroundImageAlpha must between 0 and 1, now reset to 1. ")
