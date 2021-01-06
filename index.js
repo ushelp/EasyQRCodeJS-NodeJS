@@ -3,7 +3,7 @@
  *
  * NodeJS QRCode generator. Can save image or svg to file, get standard base64 image data url text or get SVG serialized text. Cross-browser QRCode generator for pure javascript. Support Dot style, Logo, Background image, Colorful, Title etc. settings. support binary mode.(Running without DOM on server side)
  *
- * Version 4.2.0
+ * Version 4.2.1
  *
  * @author [ inthinkcolor@gmail.com ]
  *
@@ -1155,18 +1155,21 @@ Drawing.prototype.draw = function(oQRCode) {
     var t = this;
 
     function drawQuietZoneColor() {
-        // top
-        _oContext.lineWidth = 0;
-        _oContext.fillStyle = _htOption.quietZoneColor;
+        if (_htOption.quietZone > 0 && _htOption.quietZoneColor) {
+            // top
+            _oContext.lineWidth = 0;
+            _oContext.fillStyle = _htOption.quietZoneColor;
 
-        _oContext.fillRect(0, 0, t._canvas.width, _htOption.quietZone);
-        // left
-        _oContext.fillRect(0, _htOption.quietZone, _htOption.quietZone, t._canvas.height - _htOption.quietZone * 2);
-        // right
-        _oContext.fillRect(t._canvas.width - _htOption.quietZone, _htOption.quietZone, _htOption.quietZone, t._canvas
-            .height - _htOption.quietZone * 2);
-        // bottom
-        _oContext.fillRect(0, t._canvas.height - _htOption.quietZone, t._canvas.width, _htOption.quietZone);
+            _oContext.fillRect(0, 0, t._canvas.width, _htOption.quietZone);
+            // left
+            _oContext.fillRect(0, _htOption.quietZone, _htOption.quietZone, t._canvas.height - _htOption.quietZone *
+                2);
+            // right
+            _oContext.fillRect(t._canvas.width - _htOption.quietZone, _htOption.quietZone, _htOption.quietZone, t._canvas
+                .height - _htOption.quietZone * 2);
+            // bottom
+            _oContext.fillRect(0, t._canvas.height - _htOption.quietZone, t._canvas.width, _htOption.quietZone);
+        }
     }
 
     if (_htOption.backgroundImage) {
@@ -1369,12 +1372,8 @@ Drawing.prototype.draw = function(oQRCode) {
                 _oContext.drawImage(img, imgContainerX + (imgContainerW - imgW) / 2, imgContainerY +
                     (imgContainerH - imgH) / 2, imgW, imgH);
 
+                drawQuietZoneColor();
                 _this._bIsPainted = true;
-
-                if (_htOption.quietZone > 0 && _htOption.quietZoneColor) {
-                    drawQuietZoneColor();
-                }
-
                 _this.makeImage();
             }
 
@@ -1395,10 +1394,8 @@ Drawing.prototype.draw = function(oQRCode) {
             }
 
         } else {
+            drawQuietZoneColor();
             this._bIsPainted = true;
-            if (_htOption.quietZone > 0 && _htOption.quietZoneColor) {
-                drawQuietZoneColor();
-            }
             this.makeImage();
         }
 
