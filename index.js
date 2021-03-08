@@ -3,7 +3,7 @@
  *
  * NodeJS QRCode generator. Can save image or svg to file, get standard base64 image data url text or get SVG serialized text. Cross-browser QRCode generator for pure javascript. Support Dot style, Logo, Background image, Colorful, Title etc. settings. support binary mode.(Running without DOM on server side)
  *
- * Version 4.2.1
+ * Version 4.2.3
  *
  * @author [ inthinkcolor@gmail.com ]
  *
@@ -1218,12 +1218,23 @@ Drawing.prototype.draw = function(oQRCode) {
 
                         lColor = "rgba(0,0,0,0)";
                         if (row == 6) {
-                            dColor = _htOption.timing_H || _htOption.timing || _htOption.colorDark;
+                            // dColor = _htOption.timing_H || _htOption.timing || _htOption.colorDark;
+                            if (_htOption.autoColor) {
+                                dColor = _htOption.timing_H || _htOption.timing || _htOption.autoColorDark;
+                                lColor = _htOption.timing_H || _htOption.timing || _htOption.autoColorLight;
+                            } else {
+                                dColor = _htOption.timing_H || _htOption.timing || _htOption.colorDark;
+                            }
                         } else if (col == 6) {
-                            dColor = _htOption.timing_V || _htOption.timing ||
-                                _htOption.colorDark;
+                            // dColor = _htOption.timing_V || _htOption.timing || _htOption.colorDark;
+                            if (_htOption.autoColor) {
+                                dColor = _htOption.timing_V || _htOption.timing || _htOption.autoColorDark;
+                                lColor = _htOption.timing_V || _htOption.timing || _htOption.autoColorLight;
+                            } else {
+                                dColor = _htOption.timing_V || _htOption.timing ||
+                                    _htOption.colorDark;
+                            }
                         } else {
-
                             if (_htOption.autoColor) {
                                 dColor = _htOption.autoColorDark;
                                 lColor = _htOption.autoColorLight;
@@ -1257,8 +1268,15 @@ Drawing.prototype.draw = function(oQRCode) {
                         nowDotScale = _htOption.dotScaleAO;
                     } else if (type == 'AI') {
                         nowDotScale = _htOption.dotScaleAI;
+                    }
+
+                    if (_htOption.backgroundImage && _htOption.autoColor) {
+                        dColor = ((eye.type == 'AO') ? _htOption.AI : _htOption.AO) ||
+                            _htOption.autoColorDark;
+                        lColor = _htOption.autoColorLight;
                     } else {
-                        nowDotScale = 1;
+                        dColor = ((eye.type == 'AO') ? _htOption.AI : _htOption.AO) ||
+                            dColor;
                     }
 
                     _oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop +
