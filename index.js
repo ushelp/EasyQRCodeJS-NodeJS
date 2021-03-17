@@ -1,3 +1,4 @@
+  
 /**
  * EasyQRCodeJS-NodeJS
  *
@@ -1185,6 +1186,9 @@ Drawing.prototype.draw = function(oQRCode) {
             _oContext.globalAlpha = 1;
 
             drawQrcode.call(t, oQRCode);
+        }
+        bgImg.onerror = function(e){
+            t.reject(e);
         }
         bgImg.src = _htOption.backgroundImage;
         // DoSomething
