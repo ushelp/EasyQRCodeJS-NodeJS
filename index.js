@@ -3,7 +3,7 @@
  *
  * NodeJS QRCode generator. Can save image or svg to file, get standard base64 image data url text or get SVG serialized text. Cross-browser QRCode generator for pure javascript. Support Dot style, Logo, Background image, Colorful, Title etc. settings. support binary mode.(Running without DOM on server side)
  *
- * Version 4.2.5
+ * Version 4.2.6
  *
  * @author [ inthinkcolor@gmail.com ]
  *
@@ -1285,6 +1285,8 @@ Drawing.prototype.draw = function(oQRCode) {
                         nowDotScale = _htOption.dotScaleAO;
                     } else if (type == 'AI') {
                         nowDotScale = _htOption.dotScaleAI;
+                    }else {
+                        nowDotScale = 1;
                     }
 
                     if (_htOption.backgroundImage && _htOption.autoColor) {
