@@ -69,7 +69,7 @@ var config3={
 
 	// === Title
 	title: 'EasyQRCode', // Title
-	titleFont: "bold 24px Arial", // Title font
+	titleFont: "normal normal bold 24px Arial", // Title font
 	titleColor: "#004284", // Title Color
 	titleBackgroundColor: "#ffffff", // Title Background
 	titleHeight: 70, // Title height, include subTitle
@@ -77,7 +77,7 @@ var config3={
 	
 	// === SubTitle
 	subTitle: 'nodejs', // Subtitle content
-	subTitleFont: "20px Arial", // Subtitle font
+	subTitleFont: "normal normal normal 20px Arial", // Subtitle font
 	subTitleColor: "#269926", // Subtitle color
 	subTitleTop: 50, // Subtitle drwa position(Y coordinate), default is 50
 	
