@@ -174,12 +174,14 @@ var qrcode = new QRCode(options);
 		
 		// ====== Logo
 		/*
-		logo:"../demo/logo.png", // Relative address, relative to `easy.qrcode.min.js`
-		logo:"http://127.0.0.1:8020/easy-qrcodejs/demo/logo.png", 
-		logoWidth:80, // width. default is automatic width
-		logoHeight:80, // height. default is automatic height
-		logoBackgroundColor:'#fffff', // Logo backgroud color, Invalid when `logBgTransparent` is true; default is '#ffffff'
-		logoBackgroundTransparent:false, // Whether use transparent image, default is false
+		logo: "../demo/logo.png", // Relative address, relative to `easy.qrcode.min.js`
+		logo: "http://127.0.0.1:8020/easy-qrcodejs/demo/logo.png", 
+		logoWidth: 80, // fixed logo width. default is `width/3.5`
+		logoHeight: 80, // fixed logo height. default is `heigth/3.5`
+		logoMaxWidth: undefined, // Maximum logo width. if set will ignore `logoWidth` value
+		logoMaxHeight: undefined, // Maximum logo height. if set will ignore `logoHeight` value
+		logoBackgroundColor: '#fffff', // Logo backgroud color, Invalid when `logBgTransparent` is true; default is '#ffffff'
+		logoBackgroundTransparent: false, // Whether use transparent image, default is false
 		*/
 	
 		// ====== Backgroud Image
@@ -279,8 +281,10 @@ var qrcode = new QRCode(options);
 | **quietZoneColor** | N | String | `rgba(0,0,0,0)` |  Background CSS color to Quiet Zone | 
 | Logo options| --- | ---|---|---|
 | **logo** | N | String | `undefined` | Logo Image Path or Base64 encoded image. If use relative address, relative to `easy.qrcode.min.js` |  
-| **logoWidth** | N | Number | `undefined` |  Height |  
-| **logoHeight** | N | Number | `undefined` |  Width |  
+| **logoWidth** | N | Number | `width/3.5` |  Fixed logo width. |
+| **logoHeight** | N | Number | `height/3.5` |  fixed logo height. | 
+| **maxLogoWidth** | N | Number | `undefined` |  Maximum logo width. if set will ignore `logoWidth` value. | 
+| **maxLogoHeight** | N | Number | `undefined` |  Maximum logo height. if set will ignore `logoHeight` value. |  
 | **logoBackgroundTransparent** | N | Boolean | `false` |  Whether the background transparent image(`PNG`) shows transparency. When `true`, `logoBackgroundColor` is invalid |  
 | **logoBackgroundColor** | N | String | `#ffffff` |  Set Background CSS Color when image background transparent. Valid when `logoBackgroundTransparent` is `false` |  
 | Backgroud Image options|  ---|--- |---|---|

@@ -3,7 +3,7 @@
  *
  * NodeJS QRCode generator. Can save image or svg to file, get standard base64 image data url text or get SVG serialized text. Cross-browser QRCode generator for pure javascript. Support Dot style, Logo, Background image, Colorful, Title etc. settings. support binary mode.(Running without DOM on server side)
  *
- * Version 4.2.7
+ * Version 4.3.0
  *
  * @author [ inthinkcolor@gmail.com ]
  *
@@ -1285,7 +1285,7 @@ Drawing.prototype.draw = function(oQRCode) {
                         nowDotScale = _htOption.dotScaleAO;
                     } else if (type == 'AI') {
                         nowDotScale = _htOption.dotScaleAI;
-                    }else {
+                    } else {
                         nowDotScale = 1;
                     }
 
@@ -1374,26 +1374,18 @@ Drawing.prototype.draw = function(oQRCode) {
                     imgContainerW = imgContainerH;
                 }
 
-                if (_htOption.logoWidth) {
+                if (_htOption.logoMaxWidth) {
+                    imgContainerW = Math.round(_htOption.logoMaxWidth);
+                } else if (_htOption.logoWidth) {
                     imgContainerW = Math.round(_htOption.logoWidth);
                 }
-                if (_htOption.logoHeight) {
+
+                if (_htOption.logoMaxHeight) {
+                    imgContainerH = Math.round(_htOption.logoMaxHeight);
+                } else if (_htOption.logoHeight) {
                     imgContainerH = Math.round(_htOption.logoHeight);
                 }
 
-                var imgContainerX = (_htOption.width + _htOption.quietZone * 2 - imgContainerW) / 2;
-                var imgContainerY = (_htOption.height + _htOption.titleHeight + _htOption.quietZone *
-                    2 - imgContainerH) / 2;
-
-                // Did Not Use Transparent Logo Image
-                if (!_htOption.logoBackgroundTransparent) {
-                    //if (!_htOption.logoBackgroundColor) {
-                    //_htOption.logoBackgroundColor = '#ffffff';
-                    //}
-                    _oContext.fillStyle = _htOption.logoBackgroundColor;
-
-                    _oContext.fillRect(imgContainerX, imgContainerY, imgContainerW, imgContainerH);
-                }
                 var nw;
                 var nh;
                 if (typeof img.naturalWidth == "undefined") {
@@ -1406,10 +1398,47 @@ Drawing.prototype.draw = function(oQRCode) {
                     nh = img.naturalHeight;
                 }
 
+                if (_htOption.logoMaxWidth || _htOption.logoMaxHeight) {
+                    if (_htOption.logoMaxWidth && nw <= imgContainerW) {
+                        imgContainerW = nw;
+                    }
+
+                    if (_htOption.logoMaxHeight && nh <= imgContainerH) {
+                        imgContainerH = nh;
+                    }
+                    if (nw <= imgContainerW && nh <= imgContainerH) {
+                        imgContainerW = nw;
+                        imgContainerH = nh;
+                    }
+                }
+
+                var imgContainerX = (_htOption.width + _htOption.quietZone * 2 - imgContainerW) / 2;
+                var imgContainerY = (_htOption.height + _htOption.titleHeight + _htOption.quietZone *
+                    2 - imgContainerH) / 2;
+
                 var imgScale = Math.min(imgContainerW / nw, imgContainerH / nh);
                 var imgW = nw * imgScale;
                 var imgH = nh * imgScale;
 
+                if (_htOption.logoMaxWidth || _htOption.logoMaxHeight) {
+                    imgContainerW = imgW;
+                    imgContainerH = imgH;
+                    imgContainerX = (_htOption.width + _htOption.quietZone * 2 - imgContainerW) / 2;
+                    imgContainerY = (_htOption.height + _htOption.titleHeight + _htOption
+                        .quietZone *
+                        2 - imgContainerH) / 2;
+
+                }
+
+                // Did Not Use Transparent Logo Image
+                if (!_htOption.logoBackgroundTransparent) {
+                    //if (!_htOption.logoBackgroundColor) {
+                    //_htOption.logoBackgroundColor = '#ffffff';
+                    //}
+                    _oContext.fillStyle = _htOption.logoBackgroundColor;
+
+                    _oContext.fillRect(imgContainerX, imgContainerY, imgContainerW, imgContainerH);
+                }
                 _oContext.drawImage(img, imgContainerX + (imgContainerW - imgW) / 2, imgContainerY +
                     (imgContainerH - imgH) / 2, imgW, imgH);
 
@@ -1566,6 +1595,8 @@ function QRCode(vOption) {
         logo: undefined,
         logoWidth: undefined,
         logoHeight: undefined,
+        logoMaxWidth: undefined,
+        logoMaxHeight: undefined,
         logoBackgroundColor: '#ffffff',
         logoBackgroundTransparent: false,
 
