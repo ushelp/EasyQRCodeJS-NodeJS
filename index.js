@@ -3,7 +3,7 @@
  *
  * NodeJS QRCode generator. Can save image or svg to file, get standard base64 image data url text or get SVG serialized text. Cross-browser QRCode generator for pure javascript. Support Dot style, Logo, Background image, Colorful, Title etc. settings. support binary mode.(Running without DOM on server side)
  *
- * Version 4.3.1
+ * Version 4.3.2
  *
  * @author [ inthinkcolor@gmail.com ]
  *
@@ -1024,7 +1024,7 @@ function _getTypeNumber(sText, _htOption) {
     var nType = 1;
     var length = _getUTF8Length(sText);
 
-    for (var i = 0, len = QRCodeLimitLength.length; i <= len; i++) {
+    for (var i = 0, len = QRCodeLimitLength.length; i < len; i++) {
         var nLimit = 0;
 
         switch (nCorrectLevel) {
@@ -1049,7 +1049,8 @@ function _getTypeNumber(sText, _htOption) {
         }
     }
     if (nType > QRCodeLimitLength.length) {
-        throw new Error("Too long data");
+        throw new Error("Too long data. the CorrectLevel." + ['M', 'L', 'H', 'Q'][nCorrectLevel] +
+            " limit length is " + nLimit);
     }
 
     if (_htOption.version != 0) {
@@ -1107,11 +1108,11 @@ Drawing.prototype.draw = function(oQRCode) {
     var nCount = oQRCode.getModuleCount();
     var nWidth = Math.round(_htOption.width / nCount);
     var nHeight = Math.round((_htOption.height - _htOption.titleHeight) / nCount);
-    if(nWidth<=1){
-        nWidth=1;
+    if (nWidth <= 1) {
+        nWidth = 1;
     }
-    if(nHeight<=1){
-        nHeight=1;
+    if (nHeight <= 1) {
+        nHeight = 1;
     }
 
     _htOption.quietZone = Math.round(_htOption.quietZone);
