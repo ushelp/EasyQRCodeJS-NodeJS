@@ -8,8 +8,12 @@ declare class QRCode {
     constructor(vOption: any);
 
     saveImage(saveOptions: any): any;
+    
+    saveSVG(saveOptions: any): any;
 
     toDataURL(format?: any): any;
+    
+    toSVGText(format?: any): any;
 
     static CorrectLevel: {
         H: number;
