@@ -1,6 +1,6 @@
 {
 	"name": "easyqrcodejs-nodejs",
-	"version": "4.3.3",
+	"version": "4.3.4",
 	"description": "NodeJS QRCode generator. Can save image or svg to file, get standard base64 image data url text or get SVG serialized text. Cross-browser QRCode generator for pure javascript. Support Dot style, Logo, Background image, Colorful, Title etc. settings. support binary mode.(Running without DOM on server side)",
 	"main": "index.min.js",
 	"scripts": {},
@@ -41,9 +41,9 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"canvas": "^2.6.1",
-		"jsdom": "^16.4.0",
-		"svgo": "^2.3.0"
+		"canvas": "^2.8.0",
+		"jsdom": "^16.6.0",
+		"svgo": "^2.3.1"
 	},
 	"devDependencies": {}
 }

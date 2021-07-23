@@ -1181,7 +1181,6 @@
      * http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#dom-context-2d-drawimage
      */
     ctx.prototype.drawImage = function() {
-
         //convert arguments to a real array
         var args = Array.prototype.slice.call(arguments),
             image = args[0],
@@ -1226,18 +1225,20 @@
         svgImage.setAttribute("height", dh);
         svgImage.setAttribute("preserveAspectRatio", "none");
         svgImage.setAttribute("opacity", this.globalAlpha);
+        
         if (sx || sy || sw !== image.width || sh !== image.height) {
             //crop the image using a temporary canvas
             canvas = this.__document.createElement("canvas");
             canvas.width = dw;
             canvas.height = dh;
             context = canvas.getContext("2d");
-            context.drawImage(image, sx, sy, sw, sh, 0, 0, dw, dh);
+            context.drawImage(t, sx, sy, sw, sh, 0, 0, dw, dh);
             image = canvas;
         }
+        
         svgImage.setAttribute("transform", translateDirective);
         svgImage.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href",
-            image.nodeName === "CANVAS" ? image.toDataURL() : image.src);
+            image.nodeName === "CANVAS" ? image.toDataURL() : image.originalSrc);
         parent.appendChild(svgImage);
     };
 
