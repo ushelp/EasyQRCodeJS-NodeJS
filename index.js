@@ -1543,6 +1543,17 @@ Drawing.prototype.makeImage = function() {
                 })
             }
         }
+    } else if (makeOptions.makeType == 'STREAM') {
+        if (this._htOption.onRenderingStart) {
+            this._htOption.onRenderingStart(this._htOption);
+        } else {
+            if (this._htOption.format == 'PNG') {
+                // dataUrl = this._canvas.toDataURL()
+                t.resolve(this._canvas.createPNGStream());
+            } else {
+                t.resolve(this._canvas.createJPEGStream());
+            }
+        }
     }
 };
 
@@ -1813,9 +1824,9 @@ QRCode.prototype.saveSVG = function(saveOptions) {
 };
 
 // Get Base64 or SVG text
-QRCode.prototype._toData = function(drawer) {
+QRCode.prototype._toData = function(drawer, makeType = 'URL') {
     var defOptions = {
-        makeType: 'URL'
+        makeType
     }
     this._htOption._drawer = drawer;
 
@@ -1847,6 +1858,10 @@ QRCode.prototype.toDataURL = function() {
 QRCode.prototype.toSVGText = function() {
     return this._toData('svg');
 };
+
+QRCode.prototype.toStream = function() {
+    return this._toData('canvas', 'STREAM');
+}
 
 
 /**
