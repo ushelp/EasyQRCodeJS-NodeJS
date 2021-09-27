@@ -14,6 +14,8 @@ declare class QRCode {
     toDataURL(format?: any): any;
     
     toSVGText(format?: any): any;
+    
+    toStream(format?: any): any;
 
     static CorrectLevel: {
         H: number;

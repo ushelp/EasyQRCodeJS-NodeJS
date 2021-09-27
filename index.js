@@ -3,7 +3,7 @@
  *
  * NodeJS QRCode generator. Can save image or svg to file, get standard base64 image data url text or get SVG serialized text. Cross-browser QRCode generator for pure javascript. Support Dot style, Logo, Background image, Colorful, Title etc. settings. support binary mode.(Running without DOM on server side)
  *
- * Version 4.3.5
+ * Version 4.4.0
  *
  * @author [ inthinkcolor@gmail.com ]
  *
@@ -1543,6 +1543,19 @@ Drawing.prototype.makeImage = function() {
                 })
             }
         }
+    } else if (makeOptions.makeType == 'STREAM') {
+
+        if (this._htOption.onRenderingStart) {
+            this._htOption.onRenderingStart(this._htOption);
+        }
+        
+        if (this._htOption.format == 'PNG') {
+            // dataUrl = this._canvas.toDataURL()
+            t.resolve(this._canvas.createPNGStream());
+        } else {
+            t.resolve(this._canvas.createJPEGStream());
+        }
+  
     }
 };
 
@@ -1813,9 +1826,9 @@ QRCode.prototype.saveSVG = function(saveOptions) {
 };
 
 // Get Base64 or SVG text
-QRCode.prototype._toData = function(drawer) {
+QRCode.prototype._toData = function(drawer, makeType) {
     var defOptions = {
-        makeType: 'URL'
+        makeType: makeType?makeType:'URL'
     }
     this._htOption._drawer = drawer;
 
@@ -1847,7 +1860,12 @@ QRCode.prototype.toDataURL = function() {
 QRCode.prototype.toSVGText = function() {
     return this._toData('svg');
 };
-
+/**
+ * Get SVG data text: '<svg xmlns:xlink="http://www.w3.org/1999/xlink" ...'
+ */
+QRCode.prototype.toStream = function() {
+    return this._toData('canvas', 'STREAM');
+};
 
 /**
  * @name QRCode.CorrectLevel

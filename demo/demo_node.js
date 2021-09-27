@@ -231,3 +231,32 @@ qrcode5.toSVGText().then(data=>{
 qrcode8.saveSVG({
     path: 'qrcode.svg'
 })
+
+
+
+var streamConfig = {
+    // ====== Basic
+    text: "https://github.com/ushelp/EasyQRCodeJS-NodeJS",
+    colorLight: 'transparent',
+    width: 150,
+    height: 150,
+    quietZone: 10,
+    quietZoneColor: 'transparent',
+}
+
+
+async function generate() {
+    var streamQrcode = new QRCode(streamConfig);
+
+    const out = fs.createWriteStream(`qrcode-stream.png`);
+    // const stream = await streamQrcode.toStream();
+    // stream.pipe(out);
+    // out.on('finish', () => console.log('Finsihed'));
+
+    streamQrcode.toStream().then(res=>{
+        res.pipe(out).on('finish', () => console.log('Stream Finsihed'));
+    })
+
+}
+
+generate();

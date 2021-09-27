@@ -42,6 +42,8 @@ EasyQRCodeJS-NodeJS 是一个 NodeJS 环境下的服务端 JavaScript QRCode 图
 	- Support get standard base64 image data url text: `data:image/png;base64, ...`
 
 	- Support get SVG data text: `<svg xmlns:xlink="http://www.w3.org/1999/xlink" ...`
+
+    - Support get a stream from Canvas
     
     - Required Patterns that support dot style
  
@@ -72,6 +74,8 @@ EasyQRCodeJS-NodeJS 是一个 NodeJS 环境下的服务端 JavaScript QRCode 图
 	- 支持获得 Base64 编码的标准图形 URL 字符串：`data:image/png;base64, ...`
     
     - 支持获得 SVG 图形文本: `<svg xmlns:xlink="http://www.w3.org/1999/xlink" ...`
+
+    - 支持从 Canvas 获得图片 Stream
     
     - 支持点形风格的 Required Patterns
 
@@ -377,6 +381,19 @@ var qrcode = new QRCode(options);
 	});
 	```
     
+- **toStream()**
+ 
+	```JS
+    const out = fs.createWriteStream(`qrcode-stream.png`);
+    // const stream = await qrcode.toStream();
+    // stream.pipe(out);
+    // out.on('finish', () => console.log('Finsihed'));
+
+    qrcode.toStream().then(res=>{
+        res.pipe(out).on('finish', () => console.log('Finsihed'));
+    })
+	```
+        
 ## TypeScript Support
 
 Update to version `3.7.1+`.
