@@ -258,8 +258,13 @@ var qrcode = new QRCode(options);
        
 		// ===== Binary(hex) data mode
 		/*
-		binary: false // Whether it is binary mode, default is text mode. 
+		binary: false, // Whether it is binary mode, default is text mode. 
 		*/ 
+       
+        // =====  UTF-8 without BOM
+        /*
+        utf8WithoutBOM: true
+        */        
 }
 ```
 
@@ -333,6 +338,8 @@ var qrcode = new QRCode(options);
 | **quality** | N | Number | `0.75` | An object specifying the quality (0 to 1). (**JPGs only**)  |
 | Version options| --- | ---|---|---|
 | **version** | N | Number | `0` | The symbol versions of QR Code range from Version `1` to Version `40`. default 0 means automatically choose the closest version based on the text length.  [Information capacity and versions of QR Codes](https://www.qrcode.com/en/about/version.html) **NOTE**: If you set a value less than the minimum version available for text, the minimum version is automatically used. |
+| UTF-8 options| --- | ---|---|---|
+| **utf8WithoutBOM** | N | Boolean | `true` | Use UTF-8 without BOM. set to `false` value will use BOM in UFT-8.|
 | Binary(hex) data model options| --- | ---|---|---|
 | **binary** | N | Boolean | `false` | Whether it is binary mode, default is text mode.  | 
 

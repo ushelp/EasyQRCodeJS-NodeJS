@@ -3,7 +3,7 @@
  *
  * NodeJS QRCode generator. Can save image or svg to file, get standard base64 image data url text or get SVG serialized text. Cross-browser QRCode generator for pure javascript. Support Dot style, Logo, Background image, Colorful, Title etc. settings. support binary mode.(Running without DOM on server side)
  *
- * Version 4.4.0
+ * Version 4.4.1
  *
  * @author [ inthinkcolor@gmail.com ]
  *
@@ -35,7 +35,7 @@ const {
 } = jsdom;
 const win = new JSDOM().window;
 
-function QR8bitByte(data, binary) {
+function QR8bitByte(data, binary, utf8WithoutBOM) {
     this.mode = QRMode.MODE_8BIT_BYTE;
     this.data = data;
     this.parsedData = [];
@@ -70,7 +70,7 @@ function QR8bitByte(data, binary) {
 
     this.parsedData = Array.prototype.concat.apply([], this.parsedData);
 
-    if (this.parsedData.length != this.data.length) {
+    if (!utf8WithoutBOM && this.parsedData.length != this.data.length) {
         this.parsedData.unshift(191);
         this.parsedData.unshift(187);
         this.parsedData.unshift(239);
@@ -98,8 +98,8 @@ function QRCodeModel(typeNumber, errorCorrectLevel) {
 }
 
 QRCodeModel.prototype = {
-    addData: function(data, binary) {
-        var newData = new QR8bitByte(data, binary);
+    addData: function(data, binary, utf8WithoutBOM) {
+        var newData = new QR8bitByte(data, binary, utf8WithoutBOM);
         this.dataList.push(newData);
         this.dataCache = null;
     },
@@ -1461,7 +1461,7 @@ Drawing.prototype.draw = function(oQRCode) {
                 // console.error(e);
                 t.reject(e);
             }
-            img.originalSrc=_htOption.logo;
+            img.originalSrc = _htOption.logo;
             img.src = _htOption.logo;
             // if (img.complete) {
             //     img.onload = null;
@@ -1548,14 +1548,14 @@ Drawing.prototype.makeImage = function() {
         if (this._htOption.onRenderingStart) {
             this._htOption.onRenderingStart(this._htOption);
         }
-        
+
         if (this._htOption.format == 'PNG') {
             // dataUrl = this._canvas.toDataURL()
             t.resolve(this._canvas.createPNGStream());
         } else {
             t.resolve(this._canvas.createJPEGStream());
         }
-  
+
     }
 };
 
@@ -1660,7 +1660,10 @@ function QRCode(vOption) {
         version: 0, // The symbol versions of QR Code range from Version 1 to Version 40. default 0 means automatically choose the closest version based on the text length.
 
         // ==== binary(hex) data mode
-        binary: false // Whether it is binary mode, default is text mode. 
+        binary: false, // Whether it is binary mode, default is text mode. 
+
+        // UTF-8 without BOM
+        utf8WithoutBOM: true
     };
     if (typeof vOption === 'string') {
         vOption = {
@@ -1776,7 +1779,7 @@ function QRCode(vOption) {
 
     this._oQRCode = null;
     this._oQRCode = new QRCodeModel(_getTypeNumber(this._htOption.text, this._htOption), this._htOption.correctLevel);
-    this._oQRCode.addData(this._htOption.text, this._htOption.binary);
+    this._oQRCode.addData(this._htOption.text, this._htOption.binary, this._htOption.utf8WithoutBOM);
     this._oQRCode.make();
 }
 
@@ -1828,7 +1831,7 @@ QRCode.prototype.saveSVG = function(saveOptions) {
 // Get Base64 or SVG text
 QRCode.prototype._toData = function(drawer, makeType) {
     var defOptions = {
-        makeType: makeType?makeType:'URL'
+        makeType: makeType ? makeType : 'URL'
     }
     this._htOption._drawer = drawer;
 
