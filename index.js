@@ -1828,7 +1828,7 @@ QRCode.prototype.saveSVG = function(saveOptions) {
     return this._toSave(saveOptions);
 };
 
-// Get Base64 or SVG text
+// Get Base64, SVG text or Stream
 QRCode.prototype._toData = function(drawer, makeType) {
     var defOptions = {
         makeType: makeType ? makeType : 'URL'
@@ -1864,7 +1864,7 @@ QRCode.prototype.toSVGText = function() {
     return this._toData('svg');
 };
 /**
- * Get SVG data text: '<svg xmlns:xlink="http://www.w3.org/1999/xlink" ...'
+ * Get a stream from canvas back
  */
 QRCode.prototype.toStream = function() {
     return this._toData('canvas', 'STREAM');
