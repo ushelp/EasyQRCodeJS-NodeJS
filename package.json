@@ -42,7 +42,7 @@
     "license": "MIT",
     "dependencies": {
         "canvas": "^2.8.0",
-        "jsdom": "^18.1.0",
+        "jsdom": "^19.0.0",
         "svgo": "^2.8.0"
     },
     "devDependencies": {}
