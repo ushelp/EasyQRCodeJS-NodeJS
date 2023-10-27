@@ -1,49 +1,49 @@
 {
-    "name": "easyqrcodejs-nodejs",
-    "version": "4.4.5",
-    "description": "NodeJS QRCode generator. Can save image or svg to file, get standard base64 image data url text or get SVG serialized text. Cross-browser QRCode generator for pure javascript. Support Dot style, Logo, Background image, Colorful, Title etc. settings. support binary mode.(Running without DOM on server side)",
-    "main": "index.min.js",
-    "scripts": {},
-    "homepage": "https://github.com/ushelp/EasyQRCodeJS-NodeJS#readme",
-    "author": "Ray <inthinkcolor@gmail.com>",
-    "directories": {
-        "dist": "dist",
-        "src": "src",
-        "demo": "demo"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/ushelp/EasyQRCodeJS-NodeJS.git"
-    },
-    "keywords": [
-        "qrcode",
-        "qrcodejs",
-        "canvas",
-        "node",
-        "nodejs",
-        "easyqrcode node",
-        "easyqrcodejs-nodejs",
-        "easyqrcode nodejs",
-        "qrcode node",
-        "qrcode server",
-        "qrcode server side",
-        "qrcode nodejs",
-        "javascript qrcode",
-        "qrcode logo",
-        "qrcode canvas",
-        "node canvas",
-        "node canvas qrcode",
-        "node qrcode",
-        "qrcode generator"
-    ],
-    "bugs": {
-        "url": "https://github.com/ushelp/EasyQRCodeJS-NodeJS/issues "
-    },
-    "license": "MIT",
-    "dependencies": {
-        "canvas": "^2.8.0",
-        "jsdom": "^19.0.0",
-        "svgo": "^2.8.0"
-    },
-    "devDependencies": {}
+  "name": "easyqrcodejs-nodejs",
+  "version": "4.4.6",
+  "description": "NodeJS QRCode generator. Can save image or svg to file, get standard base64 image data url text or get SVG serialized text. Cross-browser QRCode generator for pure javascript. Support Dot style, Logo, Background image, Colorful, Title etc. settings. support binary mode.(Running without DOM on server side)",
+  "main": "index.min.js",
+  "scripts": {},
+  "homepage": "https://github.com/ushelp/EasyQRCodeJS-NodeJS#readme",
+  "author": "Ray <inthinkcolor@gmail.com>",
+  "directories": {
+    "dist": "dist",
+    "src": "src",
+    "demo": "demo"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ushelp/EasyQRCodeJS-NodeJS.git"
+  },
+  "keywords": [
+    "qrcode",
+    "qrcodejs",
+    "canvas",
+    "node",
+    "nodejs",
+    "easyqrcode node",
+    "easyqrcodejs-nodejs",
+    "easyqrcode nodejs",
+    "qrcode node",
+    "qrcode server",
+    "qrcode server side",
+    "qrcode nodejs",
+    "javascript qrcode",
+    "qrcode logo",
+    "qrcode canvas",
+    "node canvas",
+    "node canvas qrcode",
+    "node qrcode",
+    "qrcode generator"
+  ],
+  "bugs": {
+    "url": "https://github.com/ushelp/EasyQRCodeJS-NodeJS/issues "
+  },
+  "license": "MIT",
+  "dependencies": {
+    "canvas": "^2.11.2",
+    "jsdom": "^22.1.0",
+    "svgo": "^3.0.2"
+  },
+  "devDependencies": {}
 }

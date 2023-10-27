@@ -37,6 +37,8 @@ EasyQRCodeJS-NodeJS 是一个 NodeJS 环境下的服务端 JavaScript QRCode 图
 
     - Save QRCode image file without DOM on server side
 
+	- Support unicode character set:  `😊❤️👍👨‍💻 Hello, こんにちは, こんにちは, Γεια, Привет, नमस्ते, สวัสดี, Привіт, سلام, Здравей, ສະບາຍດີ, Përshëndetje, Բարեւ, 你好`
+
 	- Support save PNG/JPEG/SVG image file
 
 	- Support get standard base64 image data url text: `data:image/png;base64, ...`
@@ -68,6 +70,8 @@ EasyQRCodeJS-NodeJS 是一个 NodeJS 环境下的服务端 JavaScript QRCode 图
 - **中文**
 
     - 无需 DOM 的服务端 QRCode 图片保存
+
+	- 支持 Unicode 字符集:  `😊❤️👍👨‍💻 Hello, こんにちは, こんにちは, Γεια, Привет, नमस्ते, สวัสดี, Привіт, سلام, Здравей, ສະບາຍດີ, Përshëndetje, Բարեւ, 你好`
 
 	- 支持存储为 PNG 图片
 
