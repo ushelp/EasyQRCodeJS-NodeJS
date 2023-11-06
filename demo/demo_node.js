@@ -1,4 +1,4 @@
-const QRCode = require('../index.min');
+const QRCode = require('../index');
 
 const fs = require('fs');
 
@@ -63,9 +63,6 @@ var config3 = {
     dotScale: 0.5, // Must be greater than 0, less than or equal to 1. default is 1
     colorDark: "#473C8B",
     colorLight: "#FFFACD",
-
-    // QuietZone
-    quietZone: 15,
 
     // === Title
     title: 'EasyQRCode', // Title
