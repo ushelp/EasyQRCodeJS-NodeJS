@@ -1,28 +1,26 @@
 // Type definitions for easyqrcodejs-nodejs.js
-// Project: [https://github.com/ushelp/EasyQRCodeJS-NodeJS] 
-// Definitions by: Ray <inthinkcolor@gmail.com> 
+// Project: [https://github.com/ushelp/EasyQRCodeJS-NodeJS]
+// Definitions by: Ray <inthinkcolor@gmail.com>
 
 export = QRCode;
 
 declare class QRCode {
-    constructor(vOption: any);
+  constructor(vOption: any);
 
-    saveImage(saveOptions: any): any;
-    
-    saveSVG(saveOptions: any): any;
+  saveImage(saveOptions: any): any;
 
-    toDataURL(format?: any): any;
-    
-    toSVGText(format?: any): any;
-    
-    toStream(format?: any): any;
+  saveSVG(saveOptions: any): any;
 
-    static CorrectLevel: {
-        H: number;
-        L: number;
-        M: number;
-        Q: number;
-    };
+  toDataURL(format?: any): any;
 
+  toSVGText(format?: any): any;
+
+  toStream(format?: any): any;
+
+  static CorrectLevel: {
+    H: number;
+    L: number;
+    M: number;
+    Q: number;
+  };
 }
-
